@@ -42,6 +42,7 @@ class Generate{
         if ($table == strtolower($temptbl)) {
           $tbl = $temptbl;
           $txt .= "<?php\n";
+          $txt .= "require_once (\"".$tbl."Model.php\");\n";
           $txt .= "\$cls$tbl = new $tbl();\n";
           $txt .= "class $tbl{\n";
           $txt .= "\n";
