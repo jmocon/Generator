@@ -4,7 +4,7 @@ require_once 'Generate.php';
 require_once 'GenerateModel.php';
 
 
-$dbName = 'phproperty';
+$dbName = 'cpd';
 
 $clsGenerate->GetTable($dbName);
 $clsGenerateModel->GetTable($dbName);
