@@ -222,10 +222,12 @@ class Generate{
     $txt .= "\n";
     $txt .= "\t\t\$Database = new Database();\n";
     $txt .= "\t\t\$conn = \$Database->GetConn();\n";
+    $txt .= "\n";
     $txt .= "\t\t\$val = false;\n";
     $txt .= "\t\t\$msg = \"\";\n";
-    $txt .= "\t\t\$sql = \"SELECT * FROM `\".\$this->table.\"` AS `count`\n";
-    $txt .= "\t\t\tWHERE\n";
+    $txt .= "\n";
+    // $txt .= "\t\t\$sql = \"SELECT COUNT(*) FROM `\".\$this->table.\"`\n";
+    // $txt .= "\t\t\tWHERE\n";
 
     foreach ($result as $key => $value) {
       if($value['Field'] == ($tbl."_DateCreated") || $value['Field'] == $tbl."_Status"){
@@ -241,33 +243,27 @@ class Generate{
 
         $strchar = str_replace($tbl.'_',"",$value['Field']);
 
-        if($value['Field'] == ($tbl."_Id")){
-          $txt .= "\t\t\t`".$value['Field']."` != '\".\$mdl->getsql$strchar().\"'";
-        }
-        else{
-          $txt .= "\t\t\t`".$value['Field']."` = '\".\$mdl->getsql$strchar().\"'";
-        }
-
-        if (++$i <= ($num_rows-$ii)){
-          $txt .= "AND\n";
-        }else {
-          $txt .= "\";\n";
-        }
-
+        $txt .= "\t\t// ".$value['Field']."\n";
+        $txt .= "\t\t\$sql = \"SELECT COUNT(*) FROM `\".\$this->table.\"`\n";
+        $txt .= "\t\t\tWHERE\n";
+        $txt .= "\t\t\t`".$tbl."_Id` != '\".\$mdl->getsqlId().\"' AND\n";
+        $txt .= "\t\t\t`".$value['Field']."` = '\".\$mdl->getsql$strchar().\"'";
+        $txt .= "\n\t\t\";\n";
+        $txt .= "\t\t\$result=mysqli_query(\$conn,\$sql) or die(mysqli_error(\$conn));\n";
+        $txt .= "\t\t\$rows = mysqli_fetch_row(\$result);\n";
+        $txt .= "\t\tif(\$rows[0] > 0)\n";
+  			$txt .= "\t\t{\n";
+				$txt .= "\t\t\t\$msg .= \"<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\\\"input".$strchar."\\\")'>".$strchar."</a>: \" . \$mdl->get".$strchar."() . \"</p>\";\n";
+				$txt .= "\t\t\t\$val = true;\n";
+  			$txt .= "\t\t}\n";
+        $txt .= "\n";
       }
 
     }
 
-    $txt .= "\t\t\$result=mysqli_query(\$conn,\$sql) or die(mysqli_error(\$conn));\n";
-    $txt .= "\t\t\$num_rows = mysqli_num_rows(\$result);\n";
+    $txt .= "\t\tmysqli_close(\$conn);\n";
     $txt .= "\n";
-    $txt .= "\t\t\tmysqli_close(\$conn);\n";
-    $txt .= "\n";
-    $txt .= "\t\tif(\$num_rows > 0)\n";
-    $txt .= "\t\t{\n";
-    $txt .= "\t\t\treturn true;\n";
-    $txt .= "\t\t}\n\n";
-    $txt .= "\t\treturn false;\n";
+    $txt .= "\t\treturn array(\"val\"=>\"\$val\",\"msg\"=>\"\$msg\");\n\n";
     $txt .= "\t}\n";
     $txt .= "\n";
 
@@ -277,12 +273,13 @@ class Generate{
   public function Get($result,$tbl){
 
     $txt = '';
-    $txt .= "\tpublic function Get(){\n";
+    $txt .= "\tpublic function Get(\$status=0){\n";
     $txt .= "\n";
     $txt .= "\t\t\$Database = new Database();\n";
     $txt .= "\t\t\$conn = \$Database->GetConn();\n";
     $txt .= "\n";
-    $txt .= "\t\t\$sql=\"SELECT * FROM `\".\$this->table.\"`\";\n";
+    $txt .= "\t\t\$sql=\"SELECT * FROM `\".\$this->table.\"`\n";
+    $txt .= "\t\tWHERE `".$tbl."_Status` = '\".\$status.\"'\";";
     $txt .= "\n";
     $txt .= "\t\t\$result=mysqli_query(\$conn,\$sql) or die(mysqli_error(\$conn));\n";
     $txt .= "\n";

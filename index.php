@@ -4,7 +4,7 @@ require_once 'Generate.php';
 require_once 'GenerateModel.php';
 
 
-$dbName = 'cpd';
+$dbName = 'designbuild3';
 
 $clsGenerate->GetTable($dbName);
 $clsGenerateModel->GetTable($dbName);
