@@ -16,12 +16,14 @@ class Upgrade{
 				`Part_Id`,
 				`Upgrade_Name`,
 				`Upgrade_Description`,
-				`Upgrade_Price`
+				`Upgrade_Price`,
+				`Upgrade_PriceType`
 			) VALUES (
 				'".$mdl->getsqlPart_Id()."',
 				'".$mdl->getsqlName()."',
 				'".$mdl->getsqlDescription()."',
-				'".$mdl->getsqlPrice()."'
+				'".$mdl->getsqlPrice()."',
+				'".$mdl->getsqlPriceType()."'
 			)";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$id = mysqli_insert_id($conn);
@@ -39,6 +41,7 @@ class Upgrade{
 				 `Upgrade_Name`='".$mdl->getsqlName()."',
 				 `Upgrade_Description`='".$mdl->getsqlDescription()."',
 				 `Upgrade_Price`='".$mdl->getsqlPrice()."',
+				 `Upgrade_PriceType`='".$mdl->getsqlPriceType()."',
 				 `Upgrade_Status`='".$mdl->getsqlStatus()."'
 		 WHERE `Upgrade_Id`='".$mdl->getsqlId()."'";
 
@@ -108,6 +111,23 @@ class Upgrade{
 
 		$sql="UPDATE `".$this->table."` SET
 			`Upgrade_Price`='".$value."'
+			WHERE `Upgrade_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function UpdatePriceType($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Upgrade_PriceType`='".$value."'
 			WHERE `Upgrade_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -223,6 +243,20 @@ class Upgrade{
 			$val = true;
 		}
 
+		// Upgrade_PriceType
+		$sql = "SELECT COUNT(*) FROM `".$this->table."`
+			WHERE
+			`Upgrade_Id` != '".$mdl->getsqlId()."' AND
+			`Upgrade_PriceType` = '".$mdl->getsqlPriceType()."'
+		";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		$rows = mysqli_fetch_row($result);
+		if($rows[0] > 0)
+		{
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputPriceType\")'>PriceType</a>: " . $mdl->getPriceType() . "</p>";
+			$val = true;
+		}
+
 		mysqli_close($conn);
 
 		return array("val"=>"$val","msg"=>"$msg");
@@ -332,6 +366,30 @@ class Upgrade{
 		while($row = mysqli_fetch_array($result))
 		{
 			$value = $row['Upgrade_Price'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetPriceTypeById($id,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT `Upgrade_PriceType` FROM `".$this->table."`
+		WHERE `Upgrade_Id` = '".$id."'
+		AND `Upgrade_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Upgrade_PriceType'];
 		}
 
 		mysqli_close($conn);
@@ -458,6 +516,25 @@ class Upgrade{
 		return $this->ListTransfer($result);
 	}
 
+	public function GetByPriceType($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Upgrade_PriceType` = '".$value."'
+		AND `Upgrade_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
 	public function GetByDateCreated($value,$status=0){
 
 		$Database = new Database();
@@ -539,6 +616,7 @@ class Upgrade{
 		$mdl->setName((isset($row['Upgrade_Name'])) ? $row['Upgrade_Name'] : '');
 		$mdl->setDescription((isset($row['Upgrade_Description'])) ? $row['Upgrade_Description'] : '');
 		$mdl->setPrice((isset($row['Upgrade_Price'])) ? $row['Upgrade_Price'] : '');
+		$mdl->setPriceType((isset($row['Upgrade_PriceType'])) ? $row['Upgrade_PriceType'] : '');
 		$mdl->setDateCreated((isset($row['Upgrade_DateCreated'])) ? $row['Upgrade_DateCreated'] : '');
 		$mdl->setStatus((isset($row['Upgrade_Status'])) ? $row['Upgrade_Status'] : '');
 		return $mdl;

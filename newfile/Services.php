@@ -1,9 +1,9 @@
 <?php
-require_once ("MaterialModel.php");
-$clsMaterial = new Material();
-class Material{
+require_once ("ServicesModel.php");
+$clsServices = new Services();
+class Services{
 
-	private $table = "material";
+	private $table = "services";
 
 	public function __construct(){}
 
@@ -13,17 +13,13 @@ class Material{
 		$conn = $Database->GetConn();
 		$sql = "INSERT INTO `".$this->table."`
 			(
-				`Part_Id`,
-				`Material_Name`,
-				`Material_Description`,
-				`Material_Price`,
-				`Material_PriceType`
+				`Services_Name`,
+				`Services_Description`,
+				`Services_Price`
 			) VALUES (
-				'".$mdl->getsqlPart_Id()."',
 				'".$mdl->getsqlName()."',
 				'".$mdl->getsqlDescription()."',
-				'".$mdl->getsqlPrice()."',
-				'".$mdl->getsqlPriceType()."'
+				'".$mdl->getsqlPrice()."'
 			)";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$id = mysqli_insert_id($conn);
@@ -37,34 +33,15 @@ class Material{
 		$Database = new Database();
 		$conn = $Database->GetConn();
 		$sql="UPDATE `".$this->table."` SET
-				 `Part_Id`='".$mdl->getsqlPart_Id()."',
-				 `Material_Name`='".$mdl->getsqlName()."',
-				 `Material_Description`='".$mdl->getsqlDescription()."',
-				 `Material_Price`='".$mdl->getsqlPrice()."',
-				 `Material_PriceType`='".$mdl->getsqlPriceType()."',
-				 `Material_Status`='".$mdl->getsqlStatus()."'
-		 WHERE `Material_Id`='".$mdl->getsqlId()."'";
+				 `Services_Name`='".$mdl->getsqlName()."',
+				 `Services_Description`='".$mdl->getsqlDescription()."',
+				 `Services_Price`='".$mdl->getsqlPrice()."',
+				 `Services_Status`='".$mdl->getsqlStatus()."'
+		 WHERE `Services_Id`='".$mdl->getsqlId()."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		 mysqli_close($conn);
-	}
-
-	public function UpdatePart_Id($id,$value){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$id = mysqli_real_escape_string($conn,$id);
-
-		$sql="UPDATE `".$this->table."` SET
-			`Part_Id`='".$value."'
-			WHERE `Material_Id` = '".$id."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
 	}
 
 	public function UpdateName($id,$value){
@@ -76,8 +53,8 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Material_Name`='".$value."'
-			WHERE `Material_Id` = '".$id."'";
+			`Services_Name`='".$value."'
+			WHERE `Services_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -93,8 +70,8 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Material_Description`='".$value."'
-			WHERE `Material_Id` = '".$id."'";
+			`Services_Description`='".$value."'
+			WHERE `Services_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -110,25 +87,8 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Material_Price`='".$value."'
-			WHERE `Material_Id` = '".$id."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-	}
-
-	public function UpdatePriceType($id,$value){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$id = mysqli_real_escape_string($conn,$id);
-
-		$sql="UPDATE `".$this->table."` SET
-			`Material_PriceType`='".$value."'
-			WHERE `Material_Id` = '".$id."'";
+			`Services_Price`='".$value."'
+			WHERE `Services_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -144,8 +104,8 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Material_Status`='".$value."'
-			WHERE `Material_Id` = '".$id."'";
+			`Services_Status`='".$value."'
+			WHERE `Services_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -158,7 +118,7 @@ class Material{
 		$conn = $Database->GetConn();
 		$id = mysqli_real_escape_string($conn,$id);
 		$sql="DELETE FROM `".$this->table."`
-			WHERE `Material_Id` = '".$id."'";
+			WHERE `Services_Id` = '".$id."'";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 			mysqli_close($conn);
@@ -173,11 +133,11 @@ class Material{
 		$val = false;
 		$msg = "";
 
-		// Material_Id
+		// Services_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Material_Id` != '".$mdl->getsqlId()."' AND
-			`Material_Id` = '".$mdl->getsqlId()."'
+			`Services_Id` != '".$mdl->getsqlId()."' AND
+			`Services_Id` = '".$mdl->getsqlId()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
@@ -187,25 +147,11 @@ class Material{
 			$val = true;
 		}
 
-		// Part_Id
+		// Services_Name
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Material_Id` != '".$mdl->getsqlId()."' AND
-			`Part_Id` = '".$mdl->getsqlPart_Id()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputPart_Id\")'>Part_Id</a>: " . $mdl->getPart_Id() . "</p>";
-			$val = true;
-		}
-
-		// Material_Name
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Material_Id` != '".$mdl->getsqlId()."' AND
-			`Material_Name` = '".$mdl->getsqlName()."'
+			`Services_Id` != '".$mdl->getsqlId()."' AND
+			`Services_Name` = '".$mdl->getsqlName()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
@@ -215,11 +161,11 @@ class Material{
 			$val = true;
 		}
 
-		// Material_Description
+		// Services_Description
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Material_Id` != '".$mdl->getsqlId()."' AND
-			`Material_Description` = '".$mdl->getsqlDescription()."'
+			`Services_Id` != '".$mdl->getsqlId()."' AND
+			`Services_Description` = '".$mdl->getsqlDescription()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
@@ -229,31 +175,17 @@ class Material{
 			$val = true;
 		}
 
-		// Material_Price
+		// Services_Price
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Material_Id` != '".$mdl->getsqlId()."' AND
-			`Material_Price` = '".$mdl->getsqlPrice()."'
+			`Services_Id` != '".$mdl->getsqlId()."' AND
+			`Services_Price` = '".$mdl->getsqlPrice()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
 			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputPrice\")'>Price</a>: " . $mdl->getPrice() . "</p>";
-			$val = true;
-		}
-
-		// Material_PriceType
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Material_Id` != '".$mdl->getsqlId()."' AND
-			`Material_PriceType` = '".$mdl->getsqlPriceType()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputPriceType\")'>PriceType</a>: " . $mdl->getPriceType() . "</p>";
 			$val = true;
 		}
 
@@ -269,36 +201,12 @@ class Material{
 		$conn = $Database->GetConn();
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Status` = '".$status."'";
+		WHERE `Services_Status` = '".$status."'";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 
 		return $this->ListTransfer($result);
-	}
-
-	public function GetPart_IdById($id,$status=0){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = "";
-		$id = mysqli_real_escape_string($conn,$id);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql="SELECT `Part_Id` FROM `".$this->table."`
-		WHERE `Material_Id` = '".$id."'
-		AND `Material_Status` = '".$status."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		while($row = mysqli_fetch_array($result))
-		{
-			$value = $row['Part_Id'];
-		}
-
-		mysqli_close($conn);
-
-		return $value;
 	}
 
 	public function GetNameById($id,$status=0){
@@ -310,14 +218,14 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Material_Name` FROM `".$this->table."`
-		WHERE `Material_Id` = '".$id."'
-		AND `Material_Status` = '".$status."'";
+		$sql="SELECT `Services_Name` FROM `".$this->table."`
+		WHERE `Services_Id` = '".$id."'
+		AND `Services_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Material_Name'];
+			$value = $row['Services_Name'];
 		}
 
 		mysqli_close($conn);
@@ -334,14 +242,14 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Material_Description` FROM `".$this->table."`
-		WHERE `Material_Id` = '".$id."'
-		AND `Material_Status` = '".$status."'";
+		$sql="SELECT `Services_Description` FROM `".$this->table."`
+		WHERE `Services_Id` = '".$id."'
+		AND `Services_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Material_Description'];
+			$value = $row['Services_Description'];
 		}
 
 		mysqli_close($conn);
@@ -358,38 +266,14 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Material_Price` FROM `".$this->table."`
-		WHERE `Material_Id` = '".$id."'
-		AND `Material_Status` = '".$status."'";
+		$sql="SELECT `Services_Price` FROM `".$this->table."`
+		WHERE `Services_Id` = '".$id."'
+		AND `Services_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Material_Price'];
-		}
-
-		mysqli_close($conn);
-
-		return $value;
-	}
-
-	public function GetPriceTypeById($id,$status=0){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = "";
-		$id = mysqli_real_escape_string($conn,$id);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql="SELECT `Material_PriceType` FROM `".$this->table."`
-		WHERE `Material_Id` = '".$id."'
-		AND `Material_Status` = '".$status."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		while($row = mysqli_fetch_array($result))
-		{
-			$value = $row['Material_PriceType'];
+			$value = $row['Services_Price'];
 		}
 
 		mysqli_close($conn);
@@ -406,14 +290,14 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Material_Status` FROM `".$this->table."`
-		WHERE `Material_Id` = '".$id."'
-		AND `Material_Status` = '".$status."'";
+		$sql="SELECT `Services_Status` FROM `".$this->table."`
+		WHERE `Services_Id` = '".$id."'
+		AND `Services_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Material_Status'];
+			$value = $row['Services_Status'];
 		}
 
 		mysqli_close($conn);
@@ -430,33 +314,14 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Id` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+		WHERE `Services_Id` = '".$value."'
+		AND `Services_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 
 		return $this->ModelTransfer($result);
-	}
-
-	public function GetByPart_Id($value,$status=0){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Part_Id` = '".$value."'
-		AND `Material_Status` = '".$status."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
 	}
 
 	public function GetByName($value,$status=0){
@@ -468,8 +333,8 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Name` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+		WHERE `Services_Name` = '".$value."'
+		AND `Services_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -487,8 +352,8 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Description` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+		WHERE `Services_Description` = '".$value."'
+		AND `Services_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -506,46 +371,8 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Price` = '".$value."'
-		AND `Material_Status` = '".$status."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
-	}
-
-	public function GetByPriceType($value,$status=0){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_PriceType` = '".$value."'
-		AND `Material_Status` = '".$status."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
-	}
-
-	public function GetByDateCreated($value,$status=0){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_DateCreated` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+		WHERE `Services_Price` = '".$value."'
+		AND `Services_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -563,8 +390,27 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Status` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+		WHERE `Services_Status` = '".$value."'
+		AND `Services_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByDateCreated($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Services_DateCreated` = '".$value."'
+		AND `Services_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -590,7 +436,7 @@ class Material{
 
 	public function ModelTransfer($result){
 
-		$mdl = new MaterialModel();
+		$mdl = new ServicesModel();
 		while($row = mysqli_fetch_array($result))
 		{
 			$mdl = $this->ToModel($row);
@@ -602,7 +448,7 @@ class Material{
 		$lst = array();
 		while($row = mysqli_fetch_array($result))
 		{
-			$mdl = new MaterialModel();
+			$mdl = new ServicesModel();
 			$mdl = $this->ToModel($row);
 			array_push($lst,$mdl);
 		}
@@ -610,15 +456,13 @@ class Material{
 	}
 
 	public function ToModel($row){
-		$mdl = new MaterialModel();
-		$mdl->setId((isset($row['Material_Id'])) ? $row['Material_Id'] : '');
-		$mdl->setPart_Id((isset($row['Part_Id'])) ? $row['Part_Id'] : '');
-		$mdl->setName((isset($row['Material_Name'])) ? $row['Material_Name'] : '');
-		$mdl->setDescription((isset($row['Material_Description'])) ? $row['Material_Description'] : '');
-		$mdl->setPrice((isset($row['Material_Price'])) ? $row['Material_Price'] : '');
-		$mdl->setPriceType((isset($row['Material_PriceType'])) ? $row['Material_PriceType'] : '');
-		$mdl->setDateCreated((isset($row['Material_DateCreated'])) ? $row['Material_DateCreated'] : '');
-		$mdl->setStatus((isset($row['Material_Status'])) ? $row['Material_Status'] : '');
+		$mdl = new ServicesModel();
+		$mdl->setId((isset($row['Services_Id'])) ? $row['Services_Id'] : '');
+		$mdl->setName((isset($row['Services_Name'])) ? $row['Services_Name'] : '');
+		$mdl->setDescription((isset($row['Services_Description'])) ? $row['Services_Description'] : '');
+		$mdl->setPrice((isset($row['Services_Price'])) ? $row['Services_Price'] : '');
+		$mdl->setStatus((isset($row['Services_Status'])) ? $row['Services_Status'] : '');
+		$mdl->setDateCreated((isset($row['Services_DateCreated'])) ? $row['Services_DateCreated'] : '');
 		return $mdl;
 	}
 }

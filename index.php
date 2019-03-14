@@ -4,10 +4,19 @@ require_once 'Generate.php';
 require_once 'GenerateModel.php';
 
 
-$dbName = 'designbuild3';
 
-$clsGenerate->GetTable($dbName);
-$clsGenerateModel->GetTable($dbName);
 
-copy("Image.php","newfile/Image.php");
+if (isset($_POST['db'])) {
+  $dbName = 'designbuild3';
+  $clsGenerate->GetTable($dbName);
+  $clsGenerateModel->GetTable($dbName);
+  copy("Image.php","newfile/Image.php");
+}else{
+  ?>
+  <form method="post">
+    <input type="text" name="db" />
+    <input type="submit" />
+  </form>
+  <?php
+}
 ?>

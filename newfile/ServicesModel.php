@@ -1,15 +1,13 @@
 <?php
-$mdlMaterial = new MaterialModel();
-class MaterialModel{
+$mdlServices = new ServicesModel();
+class ServicesModel{
 
 	private $Id = "";
-	private $Part_Id = "";
 	private $Name = "";
 	private $Description = "";
 	private $Price = "";
-	private $PriceType = "";
-	private $DateCreated = "";
 	private $Status = "";
+	private $DateCreated = "";
 
 	public function __construct(){}
 
@@ -28,24 +26,6 @@ class MaterialModel{
 
 	public function setId($Id){
 		$this->Id = $Id;
-	}
-
-
-	//Part_Id
-	public function getPart_Id(){
-		return $this->Part_Id;
-	}
-
-	public function getsqlPart_Id(){
-		$Database = new Database();
-		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->Part_Id);
-		mysqli_close($conn);
-		return $value;
-	}
-
-	public function setPart_Id($Part_Id){
-		$this->Part_Id = $Part_Id;
 	}
 
 
@@ -103,21 +83,21 @@ class MaterialModel{
 	}
 
 
-	//PriceType
-	public function getPriceType(){
-		return $this->PriceType;
+	//Status
+	public function getStatus(){
+		return $this->Status;
 	}
 
-	public function getsqlPriceType(){
+	public function getsqlStatus(){
 		$Database = new Database();
 		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->PriceType);
+		$value = mysqli_real_escape_string($conn,$this->Status);
 		mysqli_close($conn);
 		return $value;
 	}
 
-	public function setPriceType($PriceType){
-		$this->PriceType = $PriceType;
+	public function setStatus($Status){
+		$this->Status = $Status;
 	}
 
 
@@ -136,24 +116,6 @@ class MaterialModel{
 
 	public function setDateCreated($DateCreated){
 		$this->DateCreated = $DateCreated;
-	}
-
-
-	//Status
-	public function getStatus(){
-		return $this->Status;
-	}
-
-	public function getsqlStatus(){
-		$Database = new Database();
-		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->Status);
-		mysqli_close($conn);
-		return $value;
-	}
-
-	public function setStatus($Status){
-		$this->Status = $Status;
 	}
 
 

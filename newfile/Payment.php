@@ -804,50 +804,6 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
-	public function IsDateTaken($Payment_Id, $Payment_AppointmentDate){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$val = false;
-		$msg = "";
-
-		$sql = "SELECT `Payment_Id` FROM `".$this->table."` AS `count`
-				WHERE
-				`Payment_Id` != '".$Payment_Id."' AND
-				`Payment_AppointmentDate` = '".$Payment_AppointmentDate."'";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$num_rows = mysqli_num_rows($result);
-
-		mysqli_close($conn);
-
-		if($num_rows > 0)
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	public function GetByUserId($id){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$id = mysqli_real_escape_string($conn,$id);
-
-		$sql="SELECT * FROM `".$this->table."` AS `pay`
-					INNER JOIN `project` AS `proj`
-					ON `pay`.`Project_Id` = `proj`.`Project_Id`
-				WHERE `User_Id` = '".$id."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
-	}
-
 	public function SetImage($image,$id){
 
 		$val = true;
