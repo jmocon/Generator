@@ -1,12 +1,10 @@
 <?php
-$mdlPart = new PartModel();
-class PartModel{
+$mdlFoodTab = new FoodTabModel();
+class FoodTabModel{
 
 	private $Id = "";
-	private $Category_Id = "";
+	private $Tavern_Id = "";
 	private $Name = "";
-	private $Area = "";
-	private $Piece = "";
 	private $DateCreated = "";
 	private $Status = "";
 
@@ -30,21 +28,21 @@ class PartModel{
 	}
 
 
-	//Category_Id
-	public function getCategory_Id(){
-		return $this->Category_Id;
+	//Tavern_Id
+	public function getTavern_Id(){
+		return $this->Tavern_Id;
 	}
 
-	public function getsqlCategory_Id(){
+	public function getsqlTavern_Id(){
 		$Database = new Database();
 		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->Category_Id);
+		$value = mysqli_real_escape_string($conn,$this->Tavern_Id);
 		mysqli_close($conn);
 		return $value;
 	}
 
-	public function setCategory_Id($Category_Id){
-		$this->Category_Id = $Category_Id;
+	public function setTavern_Id($Tavern_Id){
+		$this->Tavern_Id = $Tavern_Id;
 	}
 
 
@@ -63,42 +61,6 @@ class PartModel{
 
 	public function setName($Name){
 		$this->Name = $Name;
-	}
-
-
-	//Area
-	public function getArea(){
-		return $this->Area;
-	}
-
-	public function getsqlArea(){
-		$Database = new Database();
-		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->Area);
-		mysqli_close($conn);
-		return $value;
-	}
-
-	public function setArea($Area){
-		$this->Area = $Area;
-	}
-
-
-	//Piece
-	public function getPiece(){
-		return $this->Piece;
-	}
-
-	public function getsqlPiece(){
-		$Database = new Database();
-		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->Piece);
-		mysqli_close($conn);
-		return $value;
-	}
-
-	public function setPiece($Piece){
-		$this->Piece = $Piece;
 	}
 
 

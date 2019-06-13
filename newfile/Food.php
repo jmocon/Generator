@@ -1,9 +1,9 @@
 <?php
-require_once ("PlanModel.php");
-$clsPlan = new Plan();
-class Plan{
+require_once ("FoodModel.php");
+$clsFood = new Food();
+class Food{
 
-	private $table = "plan";
+	private $table = "food";
 
 	public function __construct(){}
 
@@ -13,21 +13,23 @@ class Plan{
 		$conn = $Database->GetConn();
 		$sql = "INSERT INTO `".$this->table."`
 			(
-				`Plan_Name`,
-				`Plan_Description`,
-				`Plan_Size`,
-				`Plan_Price`,
-				`Plan_Bedroom`,
-				`Plan_Bathroom`,
-				`Plan_Parking`
+				`FoodCategory_Id`,
+				`Food_Name`,
+				`Food_Price`,
+				`Food_Description`,
+				`Food_Featured`,
+				`Food_BestSeller`,
+				`Food_Suggested`,
+				`Food_NotAvailable`
 			) VALUES (
+				'".$mdl->getsqlFoodCategory_Id()."',
 				'".$mdl->getsqlName()."',
-				'".$mdl->getsqlDescription()."',
-				'".$mdl->getsqlSize()."',
 				'".$mdl->getsqlPrice()."',
-				'".$mdl->getsqlBedroom()."',
-				'".$mdl->getsqlBathroom()."',
-				'".$mdl->getsqlParking()."'
+				'".$mdl->getsqlDescription()."',
+				'".$mdl->getsqlFeatured()."',
+				'".$mdl->getsqlBestSeller()."',
+				'".$mdl->getsqlSuggested()."',
+				'".$mdl->getsqlNotAvailable()."'
 			)";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$id = mysqli_insert_id($conn);
@@ -41,19 +43,37 @@ class Plan{
 		$Database = new Database();
 		$conn = $Database->GetConn();
 		$sql="UPDATE `".$this->table."` SET
-				 `Plan_Name`='".$mdl->getsqlName()."',
-				 `Plan_Description`='".$mdl->getsqlDescription()."',
-				 `Plan_Size`='".$mdl->getsqlSize()."',
-				 `Plan_Price`='".$mdl->getsqlPrice()."',
-				 `Plan_Bedroom`='".$mdl->getsqlBedroom()."',
-				 `Plan_Bathroom`='".$mdl->getsqlBathroom()."',
-				 `Plan_Parking`='".$mdl->getsqlParking()."',
-				 `Plan_Status`='".$mdl->getsqlStatus()."'
-		 WHERE `Plan_Id`='".$mdl->getsqlId()."'";
+				 `FoodCategory_Id`='".$mdl->getsqlFoodCategory_Id()."',
+				 `Food_Name`='".$mdl->getsqlName()."',
+				 `Food_Price`='".$mdl->getsqlPrice()."',
+				 `Food_Description`='".$mdl->getsqlDescription()."',
+				 `Food_Featured`='".$mdl->getsqlFeatured()."',
+				 `Food_BestSeller`='".$mdl->getsqlBestSeller()."',
+				 `Food_Suggested`='".$mdl->getsqlSuggested()."',
+				 `Food_NotAvailable`='".$mdl->getsqlNotAvailable()."',
+				 `Food_Status`='".$mdl->getsqlStatus()."'
+		 WHERE `Food_Id`='".$mdl->getsqlId()."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		 mysqli_close($conn);
+	}
+
+	public function UpdateFoodCategory_Id($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`FoodCategory_Id`='".$value."'
+			WHERE `Food_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
 	}
 
 	public function UpdateName($id,$value){
@@ -65,42 +85,8 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Plan_Name`='".$value."'
-			WHERE `Plan_Id` = '".$id."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-	}
-
-	public function UpdateDescription($id,$value){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$id = mysqli_real_escape_string($conn,$id);
-
-		$sql="UPDATE `".$this->table."` SET
-			`Plan_Description`='".$value."'
-			WHERE `Plan_Id` = '".$id."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-	}
-
-	public function UpdateSize($id,$value){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$id = mysqli_real_escape_string($conn,$id);
-
-		$sql="UPDATE `".$this->table."` SET
-			`Plan_Size`='".$value."'
-			WHERE `Plan_Id` = '".$id."'";
+			`Food_Name`='".$value."'
+			WHERE `Food_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -116,15 +102,15 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Plan_Price`='".$value."'
-			WHERE `Plan_Id` = '".$id."'";
+			`Food_Price`='".$value."'
+			WHERE `Food_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateBedroom($id,$value){
+	public function UpdateDescription($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -133,15 +119,15 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Plan_Bedroom`='".$value."'
-			WHERE `Plan_Id` = '".$id."'";
+			`Food_Description`='".$value."'
+			WHERE `Food_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateBathroom($id,$value){
+	public function UpdateFeatured($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -150,15 +136,15 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Plan_Bathroom`='".$value."'
-			WHERE `Plan_Id` = '".$id."'";
+			`Food_Featured`='".$value."'
+			WHERE `Food_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateParking($id,$value){
+	public function UpdateBestSeller($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -167,8 +153,42 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Plan_Parking`='".$value."'
-			WHERE `Plan_Id` = '".$id."'";
+			`Food_BestSeller`='".$value."'
+			WHERE `Food_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function UpdateSuggested($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Food_Suggested`='".$value."'
+			WHERE `Food_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function UpdateNotAvailable($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Food_NotAvailable`='".$value."'
+			WHERE `Food_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -184,8 +204,8 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Plan_Status`='".$value."'
-			WHERE `Plan_Id` = '".$id."'";
+			`Food_Status`='".$value."'
+			WHERE `Food_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -198,7 +218,7 @@ class Plan{
 		$conn = $Database->GetConn();
 		$id = mysqli_real_escape_string($conn,$id);
 		$sql="DELETE FROM `".$this->table."`
-			WHERE `Plan_Id` = '".$id."'";
+			WHERE `Food_Id` = '".$id."'";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 			mysqli_close($conn);
@@ -213,11 +233,11 @@ class Plan{
 		$val = false;
 		$msg = "";
 
-		// Plan_Id
+		// Food_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Plan_Id` != '".$mdl->getsqlId()."' AND
-			`Plan_Id` = '".$mdl->getsqlId()."'
+			`Food_Id` != '".$mdl->getsqlId()."' AND
+			`Food_Id` = '".$mdl->getsqlId()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
@@ -227,11 +247,25 @@ class Plan{
 			$val = true;
 		}
 
-		// Plan_Name
+		// FoodCategory_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Plan_Id` != '".$mdl->getsqlId()."' AND
-			`Plan_Name` = '".$mdl->getsqlName()."'
+			`Food_Id` != '".$mdl->getsqlId()."' AND
+			`FoodCategory_Id` = '".$mdl->getsqlFoodCategory_Id()."'
+		";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		$rows = mysqli_fetch_row($result);
+		if($rows[0] > 0)
+		{
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputFoodCategory_Id\")'>FoodCategory_Id</a>: " . $mdl->getFoodCategory_Id() . "</p>";
+			$val = true;
+		}
+
+		// Food_Name
+		$sql = "SELECT COUNT(*) FROM `".$this->table."`
+			WHERE
+			`Food_Id` != '".$mdl->getsqlId()."' AND
+			`Food_Name` = '".$mdl->getsqlName()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
@@ -241,39 +275,11 @@ class Plan{
 			$val = true;
 		}
 
-		// Plan_Description
+		// Food_Price
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Plan_Id` != '".$mdl->getsqlId()."' AND
-			`Plan_Description` = '".$mdl->getsqlDescription()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputDescription\")'>Description</a>: " . $mdl->getDescription() . "</p>";
-			$val = true;
-		}
-
-		// Plan_Size
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Plan_Id` != '".$mdl->getsqlId()."' AND
-			`Plan_Size` = '".$mdl->getsqlSize()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputSize\")'>Size</a>: " . $mdl->getSize() . "</p>";
-			$val = true;
-		}
-
-		// Plan_Price
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Plan_Id` != '".$mdl->getsqlId()."' AND
-			`Plan_Price` = '".$mdl->getsqlPrice()."'
+			`Food_Id` != '".$mdl->getsqlId()."' AND
+			`Food_Price` = '".$mdl->getsqlPrice()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
@@ -283,45 +289,73 @@ class Plan{
 			$val = true;
 		}
 
-		// Plan_Bedroom
+		// Food_Description
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Plan_Id` != '".$mdl->getsqlId()."' AND
-			`Plan_Bedroom` = '".$mdl->getsqlBedroom()."'
+			`Food_Id` != '".$mdl->getsqlId()."' AND
+			`Food_Description` = '".$mdl->getsqlDescription()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputBedroom\")'>Bedroom</a>: " . $mdl->getBedroom() . "</p>";
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputDescription\")'>Description</a>: " . $mdl->getDescription() . "</p>";
 			$val = true;
 		}
 
-		// Plan_Bathroom
+		// Food_Featured
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Plan_Id` != '".$mdl->getsqlId()."' AND
-			`Plan_Bathroom` = '".$mdl->getsqlBathroom()."'
+			`Food_Id` != '".$mdl->getsqlId()."' AND
+			`Food_Featured` = '".$mdl->getsqlFeatured()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputBathroom\")'>Bathroom</a>: " . $mdl->getBathroom() . "</p>";
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputFeatured\")'>Featured</a>: " . $mdl->getFeatured() . "</p>";
 			$val = true;
 		}
 
-		// Plan_Parking
+		// Food_BestSeller
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Plan_Id` != '".$mdl->getsqlId()."' AND
-			`Plan_Parking` = '".$mdl->getsqlParking()."'
+			`Food_Id` != '".$mdl->getsqlId()."' AND
+			`Food_BestSeller` = '".$mdl->getsqlBestSeller()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputParking\")'>Parking</a>: " . $mdl->getParking() . "</p>";
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputBestSeller\")'>BestSeller</a>: " . $mdl->getBestSeller() . "</p>";
+			$val = true;
+		}
+
+		// Food_Suggested
+		$sql = "SELECT COUNT(*) FROM `".$this->table."`
+			WHERE
+			`Food_Id` != '".$mdl->getsqlId()."' AND
+			`Food_Suggested` = '".$mdl->getsqlSuggested()."'
+		";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		$rows = mysqli_fetch_row($result);
+		if($rows[0] > 0)
+		{
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputSuggested\")'>Suggested</a>: " . $mdl->getSuggested() . "</p>";
+			$val = true;
+		}
+
+		// Food_NotAvailable
+		$sql = "SELECT COUNT(*) FROM `".$this->table."`
+			WHERE
+			`Food_Id` != '".$mdl->getsqlId()."' AND
+			`Food_NotAvailable` = '".$mdl->getsqlNotAvailable()."'
+		";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		$rows = mysqli_fetch_row($result);
+		if($rows[0] > 0)
+		{
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputNotAvailable\")'>NotAvailable</a>: " . $mdl->getNotAvailable() . "</p>";
 			$val = true;
 		}
 
@@ -331,13 +365,16 @@ class Plan{
 
 	}
 
-	public function Get($status=0){
+	public function Get($status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
-		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Plan_Status` = '".$status."'";
+		$sql = "SELECT * FROM `".$this->table."`";
+		if ($status !== "") {
+			$sql .= "WHERE `Food_Status` = '".$status."'";
+		}
+
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
@@ -345,7 +382,7 @@ class Plan{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetNameById($id,$status=0){
+	public function GetFoodCategory_IdById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -354,14 +391,16 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Plan_Name` FROM `".$this->table."`
-		WHERE `Plan_Id` = '".$id."'
-		AND `Plan_Status` = '".$status."'";
+		$sql = "SELECT `FoodCategory_Id` FROM `".$this->table."`
+			WHERE `Food_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Plan_Name'];
+			$value = $row['FoodCategory_Id'];
 		}
 
 		mysqli_close($conn);
@@ -369,7 +408,7 @@ class Plan{
 		return $value;
 	}
 
-	public function GetDescriptionById($id,$status=0){
+	public function GetNameById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -378,14 +417,16 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Plan_Description` FROM `".$this->table."`
-		WHERE `Plan_Id` = '".$id."'
-		AND `Plan_Status` = '".$status."'";
+		$sql = "SELECT `Food_Name` FROM `".$this->table."`
+			WHERE `Food_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Plan_Description'];
+			$value = $row['Food_Name'];
 		}
 
 		mysqli_close($conn);
@@ -393,7 +434,7 @@ class Plan{
 		return $value;
 	}
 
-	public function GetSizeById($id,$status=0){
+	public function GetPriceById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -402,14 +443,16 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Plan_Size` FROM `".$this->table."`
-		WHERE `Plan_Id` = '".$id."'
-		AND `Plan_Status` = '".$status."'";
+		$sql = "SELECT `Food_Price` FROM `".$this->table."`
+			WHERE `Food_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Plan_Size'];
+			$value = $row['Food_Price'];
 		}
 
 		mysqli_close($conn);
@@ -417,7 +460,7 @@ class Plan{
 		return $value;
 	}
 
-	public function GetPriceById($id,$status=0){
+	public function GetDescriptionById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -426,14 +469,16 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Plan_Price` FROM `".$this->table."`
-		WHERE `Plan_Id` = '".$id."'
-		AND `Plan_Status` = '".$status."'";
+		$sql = "SELECT `Food_Description` FROM `".$this->table."`
+			WHERE `Food_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Plan_Price'];
+			$value = $row['Food_Description'];
 		}
 
 		mysqli_close($conn);
@@ -441,7 +486,7 @@ class Plan{
 		return $value;
 	}
 
-	public function GetBedroomById($id,$status=0){
+	public function GetFeaturedById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -450,14 +495,16 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Plan_Bedroom` FROM `".$this->table."`
-		WHERE `Plan_Id` = '".$id."'
-		AND `Plan_Status` = '".$status."'";
+		$sql = "SELECT `Food_Featured` FROM `".$this->table."`
+			WHERE `Food_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Plan_Bedroom'];
+			$value = $row['Food_Featured'];
 		}
 
 		mysqli_close($conn);
@@ -465,7 +512,7 @@ class Plan{
 		return $value;
 	}
 
-	public function GetBathroomById($id,$status=0){
+	public function GetBestSellerById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -474,14 +521,16 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Plan_Bathroom` FROM `".$this->table."`
-		WHERE `Plan_Id` = '".$id."'
-		AND `Plan_Status` = '".$status."'";
+		$sql = "SELECT `Food_BestSeller` FROM `".$this->table."`
+			WHERE `Food_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Plan_Bathroom'];
+			$value = $row['Food_BestSeller'];
 		}
 
 		mysqli_close($conn);
@@ -489,7 +538,7 @@ class Plan{
 		return $value;
 	}
 
-	public function GetParkingById($id,$status=0){
+	public function GetSuggestedById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -498,14 +547,16 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Plan_Parking` FROM `".$this->table."`
-		WHERE `Plan_Id` = '".$id."'
-		AND `Plan_Status` = '".$status."'";
+		$sql = "SELECT `Food_Suggested` FROM `".$this->table."`
+			WHERE `Food_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Plan_Parking'];
+			$value = $row['Food_Suggested'];
 		}
 
 		mysqli_close($conn);
@@ -513,7 +564,7 @@ class Plan{
 		return $value;
 	}
 
-	public function GetStatusById($id,$status=0){
+	public function GetNotAvailableById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -522,14 +573,16 @@ class Plan{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Plan_Status` FROM `".$this->table."`
-		WHERE `Plan_Id` = '".$id."'
-		AND `Plan_Status` = '".$status."'";
+		$sql = "SELECT `Food_NotAvailable` FROM `".$this->table."`
+			WHERE `Food_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Plan_Status'];
+			$value = $row['Food_NotAvailable'];
 		}
 
 		mysqli_close($conn);
@@ -537,7 +590,33 @@ class Plan{
 		return $value;
 	}
 
-	public function GetById($value,$status=0){
+	public function GetStatusById($id,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql = "SELECT `Food_Status` FROM `".$this->table."`
+			WHERE `Food_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Food_Status'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetById($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -546,8 +625,10 @@ class Plan{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Plan_Id` = '".$value."'
-		AND `Plan_Status` = '".$status."'";
+			WHERE `Food_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -556,7 +637,7 @@ class Plan{
 		return $this->ModelTransfer($result);
 	}
 
-	public function GetByName($value,$status=0){
+	public function GetByFoodCategory_Id($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -565,8 +646,10 @@ class Plan{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Plan_Name` = '".$value."'
-		AND `Plan_Status` = '".$status."'";
+			WHERE `FoodCategory_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -575,7 +658,7 @@ class Plan{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByDescription($value,$status=0){
+	public function GetByName($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -584,8 +667,10 @@ class Plan{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Plan_Description` = '".$value."'
-		AND `Plan_Status` = '".$status."'";
+			WHERE `Food_Name` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -594,7 +679,7 @@ class Plan{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetBySize($value,$status=0){
+	public function GetByPrice($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -603,8 +688,10 @@ class Plan{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Plan_Size` = '".$value."'
-		AND `Plan_Status` = '".$status."'";
+			WHERE `Food_Price` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -613,7 +700,7 @@ class Plan{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByPrice($value,$status=0){
+	public function GetByDescription($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -622,8 +709,10 @@ class Plan{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Plan_Price` = '".$value."'
-		AND `Plan_Status` = '".$status."'";
+			WHERE `Food_Description` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -632,7 +721,7 @@ class Plan{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByBedroom($value,$status=0){
+	public function GetByFeatured($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -641,8 +730,10 @@ class Plan{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Plan_Bedroom` = '".$value."'
-		AND `Plan_Status` = '".$status."'";
+			WHERE `Food_Featured` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -651,7 +742,7 @@ class Plan{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByBathroom($value,$status=0){
+	public function GetByBestSeller($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -660,8 +751,10 @@ class Plan{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Plan_Bathroom` = '".$value."'
-		AND `Plan_Status` = '".$status."'";
+			WHERE `Food_BestSeller` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -670,7 +763,7 @@ class Plan{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByParking($value,$status=0){
+	public function GetBySuggested($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -679,8 +772,10 @@ class Plan{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Plan_Parking` = '".$value."'
-		AND `Plan_Status` = '".$status."'";
+			WHERE `Food_Suggested` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -689,7 +784,7 @@ class Plan{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByDateCreated($value,$status=0){
+	public function GetByNotAvailable($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -698,8 +793,10 @@ class Plan{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Plan_DateCreated` = '".$value."'
-		AND `Plan_Status` = '".$status."'";
+			WHERE `Food_NotAvailable` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -708,7 +805,7 @@ class Plan{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByStatus($value,$status=0){
+	public function GetByDateCreated($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -717,8 +814,31 @@ class Plan{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Plan_Status` = '".$value."'
-		AND `Plan_Status` = '".$status."'";
+			WHERE `Food_DateCreated` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByStatus($value,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+			WHERE `Food_Status` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Food_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -744,7 +864,7 @@ class Plan{
 
 	public function ModelTransfer($result){
 
-		$mdl = new PlanModel();
+		$mdl = new FoodModel();
 		while($row = mysqli_fetch_array($result))
 		{
 			$mdl = $this->ToModel($row);
@@ -756,7 +876,7 @@ class Plan{
 		$lst = array();
 		while($row = mysqli_fetch_array($result))
 		{
-			$mdl = new PlanModel();
+			$mdl = new FoodModel();
 			$mdl = $this->ToModel($row);
 			array_push($lst,$mdl);
 		}
@@ -764,17 +884,18 @@ class Plan{
 	}
 
 	public function ToModel($row){
-		$mdl = new PlanModel();
-		$mdl->setId((isset($row['Plan_Id'])) ? $row['Plan_Id'] : '');
-		$mdl->setName((isset($row['Plan_Name'])) ? $row['Plan_Name'] : '');
-		$mdl->setDescription((isset($row['Plan_Description'])) ? $row['Plan_Description'] : '');
-		$mdl->setSize((isset($row['Plan_Size'])) ? $row['Plan_Size'] : '');
-		$mdl->setPrice((isset($row['Plan_Price'])) ? $row['Plan_Price'] : '');
-		$mdl->setBedroom((isset($row['Plan_Bedroom'])) ? $row['Plan_Bedroom'] : '');
-		$mdl->setBathroom((isset($row['Plan_Bathroom'])) ? $row['Plan_Bathroom'] : '');
-		$mdl->setParking((isset($row['Plan_Parking'])) ? $row['Plan_Parking'] : '');
-		$mdl->setDateCreated((isset($row['Plan_DateCreated'])) ? $row['Plan_DateCreated'] : '');
-		$mdl->setStatus((isset($row['Plan_Status'])) ? $row['Plan_Status'] : '');
+		$mdl = new FoodModel();
+		$mdl->setId((isset($row['Food_Id'])) ? $row['Food_Id'] : '');
+		$mdl->setFoodCategory_Id((isset($row['FoodCategory_Id'])) ? $row['FoodCategory_Id'] : '');
+		$mdl->setName((isset($row['Food_Name'])) ? $row['Food_Name'] : '');
+		$mdl->setPrice((isset($row['Food_Price'])) ? $row['Food_Price'] : '');
+		$mdl->setDescription((isset($row['Food_Description'])) ? $row['Food_Description'] : '');
+		$mdl->setFeatured((isset($row['Food_Featured'])) ? $row['Food_Featured'] : '');
+		$mdl->setBestSeller((isset($row['Food_BestSeller'])) ? $row['Food_BestSeller'] : '');
+		$mdl->setSuggested((isset($row['Food_Suggested'])) ? $row['Food_Suggested'] : '');
+		$mdl->setNotAvailable((isset($row['Food_NotAvailable'])) ? $row['Food_NotAvailable'] : '');
+		$mdl->setDateCreated((isset($row['Food_DateCreated'])) ? $row['Food_DateCreated'] : '');
+		$mdl->setStatus((isset($row['Food_Status'])) ? $row['Food_Status'] : '');
 		return $mdl;
 	}
 }

@@ -1,9 +1,9 @@
 <?php
-require_once ("ServicesModel.php");
-$clsServices = new Services();
-class Services{
+require_once ("FoodCategoryModel.php");
+$clsFoodCategory = new FoodCategory();
+class FoodCategory{
 
-	private $table = "services";
+	private $table = "foodcategory";
 
 	public function __construct(){}
 
@@ -13,13 +13,11 @@ class Services{
 		$conn = $Database->GetConn();
 		$sql = "INSERT INTO `".$this->table."`
 			(
-				`Services_Name`,
-				`Services_Description`,
-				`Services_Price`
+				`FoodTab_Id`,
+				`FoodCategory_Name`
 			) VALUES (
-				'".$mdl->getsqlName()."',
-				'".$mdl->getsqlDescription()."',
-				'".$mdl->getsqlPrice()."'
+				'".$mdl->getsqlFoodTab_Id()."',
+				'".$mdl->getsqlName()."'
 			)";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$id = mysqli_insert_id($conn);
@@ -33,15 +31,31 @@ class Services{
 		$Database = new Database();
 		$conn = $Database->GetConn();
 		$sql="UPDATE `".$this->table."` SET
-				 `Services_Name`='".$mdl->getsqlName()."',
-				 `Services_Description`='".$mdl->getsqlDescription()."',
-				 `Services_Price`='".$mdl->getsqlPrice()."',
-				 `Services_Status`='".$mdl->getsqlStatus()."'
-		 WHERE `Services_Id`='".$mdl->getsqlId()."'";
+				 `FoodTab_Id`='".$mdl->getsqlFoodTab_Id()."',
+				 `FoodCategory_Name`='".$mdl->getsqlName()."',
+				 `FoodCategory_Status`='".$mdl->getsqlStatus()."'
+		 WHERE `FoodCategory_Id`='".$mdl->getsqlId()."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		 mysqli_close($conn);
+	}
+
+	public function UpdateFoodTab_Id($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`FoodTab_Id`='".$value."'
+			WHERE `FoodCategory_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
 	}
 
 	public function UpdateName($id,$value){
@@ -53,42 +67,8 @@ class Services{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Services_Name`='".$value."'
-			WHERE `Services_Id` = '".$id."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-	}
-
-	public function UpdateDescription($id,$value){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$id = mysqli_real_escape_string($conn,$id);
-
-		$sql="UPDATE `".$this->table."` SET
-			`Services_Description`='".$value."'
-			WHERE `Services_Id` = '".$id."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-	}
-
-	public function UpdatePrice($id,$value){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$id = mysqli_real_escape_string($conn,$id);
-
-		$sql="UPDATE `".$this->table."` SET
-			`Services_Price`='".$value."'
-			WHERE `Services_Id` = '".$id."'";
+			`FoodCategory_Name`='".$value."'
+			WHERE `FoodCategory_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -104,8 +84,8 @@ class Services{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Services_Status`='".$value."'
-			WHERE `Services_Id` = '".$id."'";
+			`FoodCategory_Status`='".$value."'
+			WHERE `FoodCategory_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -118,7 +98,7 @@ class Services{
 		$conn = $Database->GetConn();
 		$id = mysqli_real_escape_string($conn,$id);
 		$sql="DELETE FROM `".$this->table."`
-			WHERE `Services_Id` = '".$id."'";
+			WHERE `FoodCategory_Id` = '".$id."'";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 			mysqli_close($conn);
@@ -133,11 +113,11 @@ class Services{
 		$val = false;
 		$msg = "";
 
-		// Services_Id
+		// FoodCategory_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Services_Id` != '".$mdl->getsqlId()."' AND
-			`Services_Id` = '".$mdl->getsqlId()."'
+			`FoodCategory_Id` != '".$mdl->getsqlId()."' AND
+			`FoodCategory_Id` = '".$mdl->getsqlId()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
@@ -147,11 +127,25 @@ class Services{
 			$val = true;
 		}
 
-		// Services_Name
+		// FoodTab_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Services_Id` != '".$mdl->getsqlId()."' AND
-			`Services_Name` = '".$mdl->getsqlName()."'
+			`FoodCategory_Id` != '".$mdl->getsqlId()."' AND
+			`FoodTab_Id` = '".$mdl->getsqlFoodTab_Id()."'
+		";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		$rows = mysqli_fetch_row($result);
+		if($rows[0] > 0)
+		{
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputFoodTab_Id\")'>FoodTab_Id</a>: " . $mdl->getFoodTab_Id() . "</p>";
+			$val = true;
+		}
+
+		// FoodCategory_Name
+		$sql = "SELECT COUNT(*) FROM `".$this->table."`
+			WHERE
+			`FoodCategory_Id` != '".$mdl->getsqlId()."' AND
+			`FoodCategory_Name` = '".$mdl->getsqlName()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
@@ -161,47 +155,22 @@ class Services{
 			$val = true;
 		}
 
-		// Services_Description
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Services_Id` != '".$mdl->getsqlId()."' AND
-			`Services_Description` = '".$mdl->getsqlDescription()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputDescription\")'>Description</a>: " . $mdl->getDescription() . "</p>";
-			$val = true;
-		}
-
-		// Services_Price
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Services_Id` != '".$mdl->getsqlId()."' AND
-			`Services_Price` = '".$mdl->getsqlPrice()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputPrice\")'>Price</a>: " . $mdl->getPrice() . "</p>";
-			$val = true;
-		}
-
 		mysqli_close($conn);
 
 		return array("val"=>"$val","msg"=>"$msg");
 
 	}
 
-	public function Get($status=0){
+	public function Get($status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
-		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Services_Status` = '".$status."'";
+		$sql = "SELECT * FROM `".$this->table."`";
+		if ($status !== "") {
+			$sql .= "WHERE `FoodCategory_Status` = '".$status."'";
+		}
+
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
@@ -209,7 +178,7 @@ class Services{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetNameById($id,$status=0){
+	public function GetFoodTab_IdById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -218,14 +187,16 @@ class Services{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Services_Name` FROM `".$this->table."`
-		WHERE `Services_Id` = '".$id."'
-		AND `Services_Status` = '".$status."'";
+		$sql = "SELECT `FoodTab_Id` FROM `".$this->table."`
+			WHERE `FoodCategory_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodCategory_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Services_Name'];
+			$value = $row['FoodTab_Id'];
 		}
 
 		mysqli_close($conn);
@@ -233,7 +204,7 @@ class Services{
 		return $value;
 	}
 
-	public function GetDescriptionById($id,$status=0){
+	public function GetNameById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -242,14 +213,16 @@ class Services{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Services_Description` FROM `".$this->table."`
-		WHERE `Services_Id` = '".$id."'
-		AND `Services_Status` = '".$status."'";
+		$sql = "SELECT `FoodCategory_Name` FROM `".$this->table."`
+			WHERE `FoodCategory_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodCategory_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Services_Description'];
+			$value = $row['FoodCategory_Name'];
 		}
 
 		mysqli_close($conn);
@@ -257,7 +230,7 @@ class Services{
 		return $value;
 	}
 
-	public function GetPriceById($id,$status=0){
+	public function GetStatusById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -266,14 +239,16 @@ class Services{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Services_Price` FROM `".$this->table."`
-		WHERE `Services_Id` = '".$id."'
-		AND `Services_Status` = '".$status."'";
+		$sql = "SELECT `FoodCategory_Status` FROM `".$this->table."`
+			WHERE `FoodCategory_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodCategory_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Services_Price'];
+			$value = $row['FoodCategory_Status'];
 		}
 
 		mysqli_close($conn);
@@ -281,31 +256,7 @@ class Services{
 		return $value;
 	}
 
-	public function GetStatusById($id,$status=0){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = "";
-		$id = mysqli_real_escape_string($conn,$id);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql="SELECT `Services_Status` FROM `".$this->table."`
-		WHERE `Services_Id` = '".$id."'
-		AND `Services_Status` = '".$status."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		while($row = mysqli_fetch_array($result))
-		{
-			$value = $row['Services_Status'];
-		}
-
-		mysqli_close($conn);
-
-		return $value;
-	}
-
-	public function GetById($value,$status=0){
+	public function GetById($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -314,8 +265,10 @@ class Services{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Services_Id` = '".$value."'
-		AND `Services_Status` = '".$status."'";
+			WHERE `FoodCategory_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodCategory_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -324,7 +277,7 @@ class Services{
 		return $this->ModelTransfer($result);
 	}
 
-	public function GetByName($value,$status=0){
+	public function GetByFoodTab_Id($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -333,8 +286,10 @@ class Services{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Services_Name` = '".$value."'
-		AND `Services_Status` = '".$status."'";
+			WHERE `FoodTab_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodCategory_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -343,7 +298,7 @@ class Services{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByDescription($value,$status=0){
+	public function GetByName($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -352,8 +307,10 @@ class Services{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Services_Description` = '".$value."'
-		AND `Services_Status` = '".$status."'";
+			WHERE `FoodCategory_Name` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodCategory_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -362,7 +319,7 @@ class Services{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByPrice($value,$status=0){
+	public function GetByDateCreated($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -371,8 +328,10 @@ class Services{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Services_Price` = '".$value."'
-		AND `Services_Status` = '".$status."'";
+			WHERE `FoodCategory_DateCreated` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodCategory_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -381,7 +340,7 @@ class Services{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByStatus($value,$status=0){
+	public function GetByStatus($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -390,27 +349,10 @@ class Services{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Services_Status` = '".$value."'
-		AND `Services_Status` = '".$status."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
-	}
-
-	public function GetByDateCreated($value,$status=0){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Services_DateCreated` = '".$value."'
-		AND `Services_Status` = '".$status."'";
+			WHERE `FoodCategory_Status` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodCategory_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -436,7 +378,7 @@ class Services{
 
 	public function ModelTransfer($result){
 
-		$mdl = new ServicesModel();
+		$mdl = new FoodCategoryModel();
 		while($row = mysqli_fetch_array($result))
 		{
 			$mdl = $this->ToModel($row);
@@ -448,7 +390,7 @@ class Services{
 		$lst = array();
 		while($row = mysqli_fetch_array($result))
 		{
-			$mdl = new ServicesModel();
+			$mdl = new FoodCategoryModel();
 			$mdl = $this->ToModel($row);
 			array_push($lst,$mdl);
 		}
@@ -456,13 +398,12 @@ class Services{
 	}
 
 	public function ToModel($row){
-		$mdl = new ServicesModel();
-		$mdl->setId((isset($row['Services_Id'])) ? $row['Services_Id'] : '');
-		$mdl->setName((isset($row['Services_Name'])) ? $row['Services_Name'] : '');
-		$mdl->setDescription((isset($row['Services_Description'])) ? $row['Services_Description'] : '');
-		$mdl->setPrice((isset($row['Services_Price'])) ? $row['Services_Price'] : '');
-		$mdl->setStatus((isset($row['Services_Status'])) ? $row['Services_Status'] : '');
-		$mdl->setDateCreated((isset($row['Services_DateCreated'])) ? $row['Services_DateCreated'] : '');
+		$mdl = new FoodCategoryModel();
+		$mdl->setId((isset($row['FoodCategory_Id'])) ? $row['FoodCategory_Id'] : '');
+		$mdl->setFoodTab_Id((isset($row['FoodTab_Id'])) ? $row['FoodTab_Id'] : '');
+		$mdl->setName((isset($row['FoodCategory_Name'])) ? $row['FoodCategory_Name'] : '');
+		$mdl->setDateCreated((isset($row['FoodCategory_DateCreated'])) ? $row['FoodCategory_DateCreated'] : '');
+		$mdl->setStatus((isset($row['FoodCategory_Status'])) ? $row['FoodCategory_Status'] : '');
 		return $mdl;
 	}
 }

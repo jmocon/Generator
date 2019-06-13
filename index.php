@@ -7,7 +7,7 @@ require_once 'GenerateModel.php';
 
 
 if (isset($_POST['db'])) {
-  $dbName = 'designbuild3';
+  $dbName = $_POST['db'];
   $clsGenerate->GetTable($dbName);
   $clsGenerateModel->GetTable($dbName);
   copy("Image.php","newfile/Image.php");

@@ -1,9 +1,9 @@
 <?php
-require_once ("UserProjectModel.php");
-$clsUserProject = new UserProject();
-class UserProject{
+require_once ("FoodTabModel.php");
+$clsFoodTab = new FoodTab();
+class FoodTab{
 
-	private $table = "userproject";
+	private $table = "foodtab";
 
 	public function __construct(){}
 
@@ -13,13 +13,11 @@ class UserProject{
 		$conn = $Database->GetConn();
 		$sql = "INSERT INTO `".$this->table."`
 			(
-				`Project_Id`,
-				`Material_Id`,
-				`Upgrade_Id`
+				`Tavern_Id`,
+				`FoodTab_Name`
 			) VALUES (
-				'".$mdl->getsqlProject_Id()."',
-				'".$mdl->getsqlMaterial_Id()."',
-				'".$mdl->getsqlUpgrade_Id()."'
+				'".$mdl->getsqlTavern_Id()."',
+				'".$mdl->getsqlName()."'
 			)";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$id = mysqli_insert_id($conn);
@@ -33,17 +31,17 @@ class UserProject{
 		$Database = new Database();
 		$conn = $Database->GetConn();
 		$sql="UPDATE `".$this->table."` SET
-				 `Project_Id`='".$mdl->getsqlProject_Id()."',
-				 `Material_Id`='".$mdl->getsqlMaterial_Id()."'
-				 `Upgrade_Id`='".$mdl->getsqlUpgrade_Id()."'
-		 WHERE `UserProject_Id`='".$mdl->getsqlId()."'";
+				 `Tavern_Id`='".$mdl->getsqlTavern_Id()."',
+				 `FoodTab_Name`='".$mdl->getsqlName()."',
+				 `FoodTab_Status`='".$mdl->getsqlStatus()."'
+		 WHERE `FoodTab_Id`='".$mdl->getsqlId()."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		 mysqli_close($conn);
 	}
 
-	public function UpdateProject_Id($id,$value){
+	public function UpdateTavern_Id($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -52,15 +50,15 @@ class UserProject{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Project_Id`='".$value."'
-			WHERE `UserProject_Id` = '".$id."'";
+			`Tavern_Id`='".$value."'
+			WHERE `FoodTab_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateMaterial_Id($id,$value){
+	public function UpdateName($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -69,15 +67,15 @@ class UserProject{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Material_Id`='".$value."'
-			WHERE `UserProject_Id` = '".$id."'";
+			`FoodTab_Name`='".$value."'
+			WHERE `FoodTab_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateUpgrade_Id($id,$value){
+	public function UpdateStatus($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -86,8 +84,8 @@ class UserProject{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Upgrade_Id`='".$value."'
-			WHERE `UserProject_Id` = '".$id."'";
+			`FoodTab_Status`='".$value."'
+			WHERE `FoodTab_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -100,7 +98,7 @@ class UserProject{
 		$conn = $Database->GetConn();
 		$id = mysqli_real_escape_string($conn,$id);
 		$sql="DELETE FROM `".$this->table."`
-			WHERE `UserProject_Id` = '".$id."'";
+			WHERE `FoodTab_Id` = '".$id."'";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 			mysqli_close($conn);
@@ -115,11 +113,11 @@ class UserProject{
 		$val = false;
 		$msg = "";
 
-		// UserProject_Id
+		// FoodTab_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`UserProject_Id` != '".$mdl->getsqlId()."' AND
-			`UserProject_Id` = '".$mdl->getsqlId()."'
+			`FoodTab_Id` != '".$mdl->getsqlId()."' AND
+			`FoodTab_Id` = '".$mdl->getsqlId()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
@@ -129,45 +127,31 @@ class UserProject{
 			$val = true;
 		}
 
-		// Project_Id
+		// Tavern_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`UserProject_Id` != '".$mdl->getsqlId()."' AND
-			`Project_Id` = '".$mdl->getsqlProject_Id()."'
+			`FoodTab_Id` != '".$mdl->getsqlId()."' AND
+			`Tavern_Id` = '".$mdl->getsqlTavern_Id()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputProject_Id\")'>Project_Id</a>: " . $mdl->getProject_Id() . "</p>";
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputTavern_Id\")'>Tavern_Id</a>: " . $mdl->getTavern_Id() . "</p>";
 			$val = true;
 		}
 
-		// Material_Id
+		// FoodTab_Name
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`UserProject_Id` != '".$mdl->getsqlId()."' AND
-			`Material_Id` = '".$mdl->getsqlMaterial_Id()."'
+			`FoodTab_Id` != '".$mdl->getsqlId()."' AND
+			`FoodTab_Name` = '".$mdl->getsqlName()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputMaterial_Id\")'>Material_Id</a>: " . $mdl->getMaterial_Id() . "</p>";
-			$val = true;
-		}
-
-		// Upgrade_Id
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`UserProject_Id` != '".$mdl->getsqlId()."' AND
-			`Upgrade_Id` = '".$mdl->getsqlUpgrade_Id()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputUpgrade_Id\")'>Upgrade_Id</a>: " . $mdl->getUpgrade_Id() . "</p>";
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputName\")'>Name</a>: " . $mdl->getName() . "</p>";
 			$val = true;
 		}
 
@@ -177,13 +161,16 @@ class UserProject{
 
 	}
 
-	public function Get($status=0){
+	public function Get($status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
-		$sql="SELECT * FROM `".$this->table."`
-		WHERE `UserProject_Status` = '".$status."'";
+		$sql = "SELECT * FROM `".$this->table."`";
+		if ($status !== "") {
+			$sql .= "WHERE `FoodTab_Status` = '".$status."'";
+		}
+
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
@@ -191,21 +178,25 @@ class UserProject{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetProject_IdById($id){
+	public function GetTavern_IdById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
 		$value = "";
 		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Project_Id` FROM `".$this->table."`
-		WHERE `UserProject_Id` = '".$id."'";
+		$sql = "SELECT `Tavern_Id` FROM `".$this->table."`
+			WHERE `FoodTab_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodTab_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Project_Id'];
+			$value = $row['Tavern_Id'];
 		}
 
 		mysqli_close($conn);
@@ -213,21 +204,25 @@ class UserProject{
 		return $value;
 	}
 
-	public function GetMaterial_IdById($id){
+	public function GetNameById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
 		$value = "";
 		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Material_Id` FROM `".$this->table."`
-		WHERE `UserProject_Id` = '".$id."'";
+		$sql = "SELECT `FoodTab_Name` FROM `".$this->table."`
+			WHERE `FoodTab_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodTab_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Material_Id'];
+			$value = $row['FoodTab_Name'];
 		}
 
 		mysqli_close($conn);
@@ -235,21 +230,25 @@ class UserProject{
 		return $value;
 	}
 
-	public function GetUpgrade_IdById($id){
+	public function GetStatusById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
 		$value = "";
 		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Upgrade_Id` FROM `".$this->table."`
-		WHERE `UserProject_Id` = '".$id."'";
+		$sql = "SELECT `FoodTab_Status` FROM `".$this->table."`
+			WHERE `FoodTab_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodTab_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Upgrade_Id'];
+			$value = $row['FoodTab_Status'];
 		}
 
 		mysqli_close($conn);
@@ -257,15 +256,19 @@ class UserProject{
 		return $value;
 	}
 
-	public function GetById($value){
+	public function GetById($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
 		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `UserProject_Id` = '".$value."'";
+			WHERE `FoodTab_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodTab_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -274,15 +277,19 @@ class UserProject{
 		return $this->ModelTransfer($result);
 	}
 
-	public function GetByProject_Id($value){
+	public function GetByTavern_Id($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
 		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Project_Id` = '".$value."'";
+			WHERE `Tavern_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodTab_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -291,15 +298,19 @@ class UserProject{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByMaterial_Id($value){
+	public function GetByName($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
 		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Id` = '".$value."'";
+			WHERE `FoodTab_Name` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodTab_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -308,15 +319,40 @@ class UserProject{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByUpgrade_Id($value){
+	public function GetByDateCreated($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
 		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Upgrade_Id` = '".$value."'";
+			WHERE `FoodTab_DateCreated` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodTab_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByStatus($value,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+			WHERE `FoodTab_Status` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `FoodTab_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -342,7 +378,7 @@ class UserProject{
 
 	public function ModelTransfer($result){
 
-		$mdl = new UserProjectModel();
+		$mdl = new FoodTabModel();
 		while($row = mysqli_fetch_array($result))
 		{
 			$mdl = $this->ToModel($row);
@@ -354,7 +390,7 @@ class UserProject{
 		$lst = array();
 		while($row = mysqli_fetch_array($result))
 		{
-			$mdl = new UserProjectModel();
+			$mdl = new FoodTabModel();
 			$mdl = $this->ToModel($row);
 			array_push($lst,$mdl);
 		}
@@ -362,11 +398,12 @@ class UserProject{
 	}
 
 	public function ToModel($row){
-		$mdl = new UserProjectModel();
-		$mdl->setId((isset($row['UserProject_Id'])) ? $row['UserProject_Id'] : '');
-		$mdl->setProject_Id((isset($row['Project_Id'])) ? $row['Project_Id'] : '');
-		$mdl->setMaterial_Id((isset($row['Material_Id'])) ? $row['Material_Id'] : '');
-		$mdl->setUpgrade_Id((isset($row['Upgrade_Id'])) ? $row['Upgrade_Id'] : '');
+		$mdl = new FoodTabModel();
+		$mdl->setId((isset($row['FoodTab_Id'])) ? $row['FoodTab_Id'] : '');
+		$mdl->setTavern_Id((isset($row['Tavern_Id'])) ? $row['Tavern_Id'] : '');
+		$mdl->setName((isset($row['FoodTab_Name'])) ? $row['FoodTab_Name'] : '');
+		$mdl->setDateCreated((isset($row['FoodTab_DateCreated'])) ? $row['FoodTab_DateCreated'] : '');
+		$mdl->setStatus((isset($row['FoodTab_Status'])) ? $row['FoodTab_Status'] : '');
 		return $mdl;
 	}
 }

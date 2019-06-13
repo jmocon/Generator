@@ -1,9 +1,9 @@
 <?php
-require_once ("PaymentModel.php");
-$clsPayment = new Payment();
-class Payment{
+require_once ("TavernModel.php");
+$clsTavern = new Tavern();
+class Tavern{
 
-	private $table = "payment";
+	private $table = "tavern";
 
 	public function __construct(){}
 
@@ -13,23 +13,21 @@ class Payment{
 		$conn = $Database->GetConn();
 		$sql = "INSERT INTO `".$this->table."`
 			(
-				`Project_Id`,
-				`Payment_ReceiptDate`,
-				`PaymentType_Id`,
-				`Payment_ReceiptStatus`,
-				`Payment_AppointmentDate`,
-				`Payment_AppointmentStatus`,
-				`Place_Id`,
-				`Payment_PlaceStatus`
+				`Tavern_Name`,
+				`Tavern_Description`,
+				`Country_Id`,
+				`Province_Id`,
+				`City_Id`,
+				`District_Id`,
+				`Tavern_GoogleMap`
 			) VALUES (
-				'".$mdl->getsqlProject_Id()."',
-				'".$mdl->getsqlReceiptDate()."',
-				'".$mdl->getsqlPaymentType_Id()."',
-				'".$mdl->getsqlReceiptStatus()."',
-				'".$mdl->getsqlAppointmentDate()."',
-				'".$mdl->getsqlAppointmentStatus()."',
-				'".$mdl->getsqlPlace_Id()."',
-				'".$mdl->getsqlPlaceStatus()."'
+				'".$mdl->getsqlName()."',
+				'".$mdl->getsqlDescription()."',
+				'".$mdl->getsqlCountry_Id()."',
+				'".$mdl->getsqlProvince_Id()."',
+				'".$mdl->getsqlCity_Id()."',
+				'".$mdl->getsqlDistrict_Id()."',
+				'".$mdl->getsqlGoogleMap()."'
 			)";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$id = mysqli_insert_id($conn);
@@ -43,23 +41,22 @@ class Payment{
 		$Database = new Database();
 		$conn = $Database->GetConn();
 		$sql="UPDATE `".$this->table."` SET
-				 `Project_Id`='".$mdl->getsqlProject_Id()."',
-				 `Payment_ReceiptDate`='".$mdl->getsqlReceiptDate()."',
-				 `PaymentType_Id`='".$mdl->getsqlPaymentType_Id()."',
-				 `Payment_ReceiptStatus`='".$mdl->getsqlReceiptStatus()."',
-				 `Payment_AppointmentDate`='".$mdl->getsqlAppointmentDate()."',
-				 `Payment_AppointmentStatus`='".$mdl->getsqlAppointmentStatus()."',
-				 `Place_Id`='".$mdl->getsqlPlace_Id()."',
-				 `Payment_PlaceStatus`='".$mdl->getsqlPlaceStatus()."',
-				 `Payment_Status`='".$mdl->getsqlStatus()."'
-		 WHERE `Payment_Id`='".$mdl->getsqlId()."'";
+				 `Tavern_Name`='".$mdl->getsqlName()."',
+				 `Tavern_Description`='".$mdl->getsqlDescription()."',
+				 `Country_Id`='".$mdl->getsqlCountry_Id()."',
+				 `Province_Id`='".$mdl->getsqlProvince_Id()."',
+				 `City_Id`='".$mdl->getsqlCity_Id()."',
+				 `District_Id`='".$mdl->getsqlDistrict_Id()."',
+				 `Tavern_GoogleMap`='".$mdl->getsqlGoogleMap()."',
+				 `Tavern_Status`='".$mdl->getsqlStatus()."'
+		 WHERE `Tavern_Id`='".$mdl->getsqlId()."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		 mysqli_close($conn);
 	}
 
-	public function UpdateProject_Id($id,$value){
+	public function UpdateName($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -68,15 +65,15 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Project_Id`='".$value."'
-			WHERE `Payment_Id` = '".$id."'";
+			`Tavern_Name`='".$value."'
+			WHERE `Tavern_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateReceiptDate($id,$value){
+	public function UpdateDescription($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -85,15 +82,15 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Payment_ReceiptDate`='".$value."'
-			WHERE `Payment_Id` = '".$id."'";
+			`Tavern_Description`='".$value."'
+			WHERE `Tavern_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdatePaymentType_Id($id,$value){
+	public function UpdateCountry_Id($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -102,15 +99,15 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`PaymentType_Id`='".$value."'
-			WHERE `Payment_Id` = '".$id."'";
+			`Country_Id`='".$value."'
+			WHERE `Tavern_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateReceiptStatus($id,$value){
+	public function UpdateProvince_Id($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -119,15 +116,15 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Payment_ReceiptStatus`='".$value."'
-			WHERE `Payment_Id` = '".$id."'";
+			`Province_Id`='".$value."'
+			WHERE `Tavern_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateAppointmentDate($id,$value){
+	public function UpdateCity_Id($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -136,15 +133,15 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Payment_AppointmentDate`='".$value."'
-			WHERE `Payment_Id` = '".$id."'";
+			`City_Id`='".$value."'
+			WHERE `Tavern_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateAppointmentStatus($id,$value){
+	public function UpdateDistrict_Id($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -153,15 +150,15 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Payment_AppointmentStatus`='".$value."'
-			WHERE `Payment_Id` = '".$id."'";
+			`District_Id`='".$value."'
+			WHERE `Tavern_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdatePlace_Id($id,$value){
+	public function UpdateGoogleMap($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -170,25 +167,8 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Place_Id`='".$value."'
-			WHERE `Payment_Id` = '".$id."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-	}
-
-	public function UpdatePlaceStatus($id,$value){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$id = mysqli_real_escape_string($conn,$id);
-
-		$sql="UPDATE `".$this->table."` SET
-			`Payment_PlaceStatus`='".$value."'
-			WHERE `Payment_Id` = '".$id."'";
+			`Tavern_GoogleMap`='".$value."'
+			WHERE `Tavern_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -204,8 +184,8 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Payment_Status`='".$value."'
-			WHERE `Payment_Id` = '".$id."'";
+			`Tavern_Status`='".$value."'
+			WHERE `Tavern_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -218,7 +198,7 @@ class Payment{
 		$conn = $Database->GetConn();
 		$id = mysqli_real_escape_string($conn,$id);
 		$sql="DELETE FROM `".$this->table."`
-			WHERE `Payment_Id` = '".$id."'";
+			WHERE `Tavern_Id` = '".$id."'";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 			mysqli_close($conn);
@@ -233,11 +213,11 @@ class Payment{
 		$val = false;
 		$msg = "";
 
-		// Payment_Id
+		// Tavern_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Payment_Id` != '".$mdl->getsqlId()."' AND
-			`Payment_Id` = '".$mdl->getsqlId()."'
+			`Tavern_Id` != '".$mdl->getsqlId()."' AND
+			`Tavern_Id` = '".$mdl->getsqlId()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
@@ -247,115 +227,101 @@ class Payment{
 			$val = true;
 		}
 
-		// Project_Id
+		// Tavern_Name
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Payment_Id` != '".$mdl->getsqlId()."' AND
-			`Project_Id` = '".$mdl->getsqlProject_Id()."'
+			`Tavern_Id` != '".$mdl->getsqlId()."' AND
+			`Tavern_Name` = '".$mdl->getsqlName()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputProject_Id\")'>Project_Id</a>: " . $mdl->getProject_Id() . "</p>";
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputName\")'>Name</a>: " . $mdl->getName() . "</p>";
 			$val = true;
 		}
 
-		// Payment_ReceiptDate
+		// Tavern_Description
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Payment_Id` != '".$mdl->getsqlId()."' AND
-			`Payment_ReceiptDate` = '".$mdl->getsqlReceiptDate()."'
+			`Tavern_Id` != '".$mdl->getsqlId()."' AND
+			`Tavern_Description` = '".$mdl->getsqlDescription()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputReceiptDate\")'>ReceiptDate</a>: " . $mdl->getReceiptDate() . "</p>";
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputDescription\")'>Description</a>: " . $mdl->getDescription() . "</p>";
 			$val = true;
 		}
 
-		// PaymentType_Id
+		// Country_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Payment_Id` != '".$mdl->getsqlId()."' AND
-			`PaymentType_Id` = '".$mdl->getsqlPaymentType_Id()."'
+			`Tavern_Id` != '".$mdl->getsqlId()."' AND
+			`Country_Id` = '".$mdl->getsqlCountry_Id()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputPaymentType_Id\")'>PaymentType_Id</a>: " . $mdl->getPaymentType_Id() . "</p>";
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputCountry_Id\")'>Country_Id</a>: " . $mdl->getCountry_Id() . "</p>";
 			$val = true;
 		}
 
-		// Payment_ReceiptStatus
+		// Province_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Payment_Id` != '".$mdl->getsqlId()."' AND
-			`Payment_ReceiptStatus` = '".$mdl->getsqlReceiptStatus()."'
+			`Tavern_Id` != '".$mdl->getsqlId()."' AND
+			`Province_Id` = '".$mdl->getsqlProvince_Id()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputReceiptStatus\")'>ReceiptStatus</a>: " . $mdl->getReceiptStatus() . "</p>";
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputProvince_Id\")'>Province_Id</a>: " . $mdl->getProvince_Id() . "</p>";
 			$val = true;
 		}
 
-		// Payment_AppointmentDate
+		// City_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Payment_Id` != '".$mdl->getsqlId()."' AND
-			`Payment_AppointmentDate` = '".$mdl->getsqlAppointmentDate()."'
+			`Tavern_Id` != '".$mdl->getsqlId()."' AND
+			`City_Id` = '".$mdl->getsqlCity_Id()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputAppointmentDate\")'>AppointmentDate</a>: " . $mdl->getAppointmentDate() . "</p>";
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputCity_Id\")'>City_Id</a>: " . $mdl->getCity_Id() . "</p>";
 			$val = true;
 		}
 
-		// Payment_AppointmentStatus
+		// District_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Payment_Id` != '".$mdl->getsqlId()."' AND
-			`Payment_AppointmentStatus` = '".$mdl->getsqlAppointmentStatus()."'
+			`Tavern_Id` != '".$mdl->getsqlId()."' AND
+			`District_Id` = '".$mdl->getsqlDistrict_Id()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputAppointmentStatus\")'>AppointmentStatus</a>: " . $mdl->getAppointmentStatus() . "</p>";
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputDistrict_Id\")'>District_Id</a>: " . $mdl->getDistrict_Id() . "</p>";
 			$val = true;
 		}
 
-		// Place_Id
+		// Tavern_GoogleMap
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Payment_Id` != '".$mdl->getsqlId()."' AND
-			`Place_Id` = '".$mdl->getsqlPlace_Id()."'
+			`Tavern_Id` != '".$mdl->getsqlId()."' AND
+			`Tavern_GoogleMap` = '".$mdl->getsqlGoogleMap()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputPlace_Id\")'>Place_Id</a>: " . $mdl->getPlace_Id() . "</p>";
-			$val = true;
-		}
-
-		// Payment_PlaceStatus
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Payment_Id` != '".$mdl->getsqlId()."' AND
-			`Payment_PlaceStatus` = '".$mdl->getsqlPlaceStatus()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputPlaceStatus\")'>PlaceStatus</a>: " . $mdl->getPlaceStatus() . "</p>";
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputGoogleMap\")'>GoogleMap</a>: " . $mdl->getGoogleMap() . "</p>";
 			$val = true;
 		}
 
@@ -365,13 +331,16 @@ class Payment{
 
 	}
 
-	public function Get($status=0){
+	public function Get($status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
-		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Payment_Status` = '".$status."'";
+		$sql = "SELECT * FROM `".$this->table."`";
+		if ($status !== "") {
+			$sql .= "WHERE `Tavern_Status` = '".$status."'";
+		}
+
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
@@ -379,7 +348,7 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetProject_IdById($id,$status=0){
+	public function GetNameById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -388,14 +357,16 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Project_Id` FROM `".$this->table."`
-		WHERE `Payment_Id` = '".$id."'
-		AND `Payment_Status` = '".$status."'";
+		$sql = "SELECT `Tavern_Name` FROM `".$this->table."`
+			WHERE `Tavern_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Project_Id'];
+			$value = $row['Tavern_Name'];
 		}
 
 		mysqli_close($conn);
@@ -403,7 +374,7 @@ class Payment{
 		return $value;
 	}
 
-	public function GetReceiptDateById($id,$status=0){
+	public function GetDescriptionById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -412,14 +383,16 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Payment_ReceiptDate` FROM `".$this->table."`
-		WHERE `Payment_Id` = '".$id."'
-		AND `Payment_Status` = '".$status."'";
+		$sql = "SELECT `Tavern_Description` FROM `".$this->table."`
+			WHERE `Tavern_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Payment_ReceiptDate'];
+			$value = $row['Tavern_Description'];
 		}
 
 		mysqli_close($conn);
@@ -427,7 +400,7 @@ class Payment{
 		return $value;
 	}
 
-	public function GetPaymentType_IdById($id,$status=0){
+	public function GetCountry_IdById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -436,14 +409,16 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `PaymentType_Id` FROM `".$this->table."`
-		WHERE `Payment_Id` = '".$id."'
-		AND `Payment_Status` = '".$status."'";
+		$sql = "SELECT `Country_Id` FROM `".$this->table."`
+			WHERE `Tavern_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['PaymentType_Id'];
+			$value = $row['Country_Id'];
 		}
 
 		mysqli_close($conn);
@@ -451,7 +426,7 @@ class Payment{
 		return $value;
 	}
 
-	public function GetReceiptStatusById($id,$status=0){
+	public function GetProvince_IdById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -460,14 +435,16 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Payment_ReceiptStatus` FROM `".$this->table."`
-		WHERE `Payment_Id` = '".$id."'
-		AND `Payment_Status` = '".$status."'";
+		$sql = "SELECT `Province_Id` FROM `".$this->table."`
+			WHERE `Tavern_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Payment_ReceiptStatus'];
+			$value = $row['Province_Id'];
 		}
 
 		mysqli_close($conn);
@@ -475,7 +452,7 @@ class Payment{
 		return $value;
 	}
 
-	public function GetAppointmentDateById($id,$status=0){
+	public function GetCity_IdById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -484,14 +461,16 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Payment_AppointmentDate` FROM `".$this->table."`
-		WHERE `Payment_Id` = '".$id."'
-		AND `Payment_Status` = '".$status."'";
+		$sql = "SELECT `City_Id` FROM `".$this->table."`
+			WHERE `Tavern_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Payment_AppointmentDate'];
+			$value = $row['City_Id'];
 		}
 
 		mysqli_close($conn);
@@ -499,7 +478,7 @@ class Payment{
 		return $value;
 	}
 
-	public function GetAppointmentStatusById($id,$status=0){
+	public function GetDistrict_IdById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -508,14 +487,16 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Payment_AppointmentStatus` FROM `".$this->table."`
-		WHERE `Payment_Id` = '".$id."'
-		AND `Payment_Status` = '".$status."'";
+		$sql = "SELECT `District_Id` FROM `".$this->table."`
+			WHERE `Tavern_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Payment_AppointmentStatus'];
+			$value = $row['District_Id'];
 		}
 
 		mysqli_close($conn);
@@ -523,7 +504,7 @@ class Payment{
 		return $value;
 	}
 
-	public function GetPlace_IdById($id,$status=0){
+	public function GetGoogleMapById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -532,14 +513,16 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Place_Id` FROM `".$this->table."`
-		WHERE `Payment_Id` = '".$id."'
-		AND `Payment_Status` = '".$status."'";
+		$sql = "SELECT `Tavern_GoogleMap` FROM `".$this->table."`
+			WHERE `Tavern_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Place_Id'];
+			$value = $row['Tavern_GoogleMap'];
 		}
 
 		mysqli_close($conn);
@@ -547,7 +530,7 @@ class Payment{
 		return $value;
 	}
 
-	public function GetPlaceStatusById($id,$status=0){
+	public function GetStatusById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -556,14 +539,16 @@ class Payment{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Payment_PlaceStatus` FROM `".$this->table."`
-		WHERE `Payment_Id` = '".$id."'
-		AND `Payment_Status` = '".$status."'";
+		$sql = "SELECT `Tavern_Status` FROM `".$this->table."`
+			WHERE `Tavern_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Payment_PlaceStatus'];
+			$value = $row['Tavern_Status'];
 		}
 
 		mysqli_close($conn);
@@ -571,31 +556,7 @@ class Payment{
 		return $value;
 	}
 
-	public function GetStatusById($id,$status=0){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = "";
-		$id = mysqli_real_escape_string($conn,$id);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql="SELECT `Payment_Status` FROM `".$this->table."`
-		WHERE `Payment_Id` = '".$id."'
-		AND `Payment_Status` = '".$status."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		while($row = mysqli_fetch_array($result))
-		{
-			$value = $row['Payment_Status'];
-		}
-
-		mysqli_close($conn);
-
-		return $value;
-	}
-
-	public function GetById($value,$status=0){
+	public function GetById($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -604,8 +565,10 @@ class Payment{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Payment_Id` = '".$value."'
-		AND `Payment_Status` = '".$status."'";
+			WHERE `Tavern_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -614,7 +577,7 @@ class Payment{
 		return $this->ModelTransfer($result);
 	}
 
-	public function GetByProject_Id($value,$status=0){
+	public function GetByName($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -623,8 +586,10 @@ class Payment{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Project_Id` = '".$value."'
-		AND `Payment_Status` = '".$status."'";
+			WHERE `Tavern_Name` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -633,7 +598,7 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByReceiptDate($value,$status=0){
+	public function GetByDescription($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -642,8 +607,10 @@ class Payment{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Payment_ReceiptDate` = '".$value."'
-		AND `Payment_Status` = '".$status."'";
+			WHERE `Tavern_Description` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -652,7 +619,7 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByPaymentType_Id($value,$status=0){
+	public function GetByCountry_Id($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -661,8 +628,10 @@ class Payment{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `PaymentType_Id` = '".$value."'
-		AND `Payment_Status` = '".$status."'";
+			WHERE `Country_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -671,7 +640,7 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByReceiptStatus($value,$status=0){
+	public function GetByProvince_Id($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -680,8 +649,10 @@ class Payment{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Payment_ReceiptStatus` = '".$value."'
-		AND `Payment_Status` = '".$status."'";
+			WHERE `Province_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -690,7 +661,7 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByAppointmentDate($value,$status=0){
+	public function GetByCity_Id($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -699,8 +670,10 @@ class Payment{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Payment_AppointmentDate` = '".$value."'
-		AND `Payment_Status` = '".$status."'";
+			WHERE `City_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -709,7 +682,7 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByAppointmentStatus($value,$status=0){
+	public function GetByDistrict_Id($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -718,8 +691,10 @@ class Payment{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Payment_AppointmentStatus` = '".$value."'
-		AND `Payment_Status` = '".$status."'";
+			WHERE `District_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -728,7 +703,7 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByPlace_Id($value,$status=0){
+	public function GetByGoogleMap($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -737,8 +712,10 @@ class Payment{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Place_Id` = '".$value."'
-		AND `Payment_Status` = '".$status."'";
+			WHERE `Tavern_GoogleMap` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -747,7 +724,7 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByPlaceStatus($value,$status=0){
+	public function GetByDateCreated($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -756,8 +733,10 @@ class Payment{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Payment_PlaceStatus` = '".$value."'
-		AND `Payment_Status` = '".$status."'";
+			WHERE `Tavern_DateCreated` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -766,7 +745,7 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByDateCreated($value,$status=0){
+	public function GetByStatus($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -775,27 +754,10 @@ class Payment{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Payment_DateCreated` = '".$value."'
-		AND `Payment_Status` = '".$status."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
-	}
-
-	public function GetByStatus($value,$status=0){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Payment_Status` = '".$value."'
-		AND `Payment_Status` = '".$status."'";
+			WHERE `Tavern_Status` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Tavern_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -821,7 +783,7 @@ class Payment{
 
 	public function ModelTransfer($result){
 
-		$mdl = new PaymentModel();
+		$mdl = new TavernModel();
 		while($row = mysqli_fetch_array($result))
 		{
 			$mdl = $this->ToModel($row);
@@ -833,7 +795,7 @@ class Payment{
 		$lst = array();
 		while($row = mysqli_fetch_array($result))
 		{
-			$mdl = new PaymentModel();
+			$mdl = new TavernModel();
 			$mdl = $this->ToModel($row);
 			array_push($lst,$mdl);
 		}
@@ -841,18 +803,17 @@ class Payment{
 	}
 
 	public function ToModel($row){
-		$mdl = new PaymentModel();
-		$mdl->setId((isset($row['Payment_Id'])) ? $row['Payment_Id'] : '');
-		$mdl->setProject_Id((isset($row['Project_Id'])) ? $row['Project_Id'] : '');
-		$mdl->setReceiptDate((isset($row['Payment_ReceiptDate'])) ? $row['Payment_ReceiptDate'] : '');
-		$mdl->setPaymentType_Id((isset($row['PaymentType_Id'])) ? $row['PaymentType_Id'] : '');
-		$mdl->setReceiptStatus((isset($row['Payment_ReceiptStatus'])) ? $row['Payment_ReceiptStatus'] : '');
-		$mdl->setAppointmentDate((isset($row['Payment_AppointmentDate'])) ? $row['Payment_AppointmentDate'] : '');
-		$mdl->setAppointmentStatus((isset($row['Payment_AppointmentStatus'])) ? $row['Payment_AppointmentStatus'] : '');
-		$mdl->setPlace_Id((isset($row['Place_Id'])) ? $row['Place_Id'] : '');
-		$mdl->setPlaceStatus((isset($row['Payment_PlaceStatus'])) ? $row['Payment_PlaceStatus'] : '');
-		$mdl->setDateCreated((isset($row['Payment_DateCreated'])) ? $row['Payment_DateCreated'] : '');
-		$mdl->setStatus((isset($row['Payment_Status'])) ? $row['Payment_Status'] : '');
+		$mdl = new TavernModel();
+		$mdl->setId((isset($row['Tavern_Id'])) ? $row['Tavern_Id'] : '');
+		$mdl->setName((isset($row['Tavern_Name'])) ? $row['Tavern_Name'] : '');
+		$mdl->setDescription((isset($row['Tavern_Description'])) ? $row['Tavern_Description'] : '');
+		$mdl->setCountry_Id((isset($row['Country_Id'])) ? $row['Country_Id'] : '');
+		$mdl->setProvince_Id((isset($row['Province_Id'])) ? $row['Province_Id'] : '');
+		$mdl->setCity_Id((isset($row['City_Id'])) ? $row['City_Id'] : '');
+		$mdl->setDistrict_Id((isset($row['District_Id'])) ? $row['District_Id'] : '');
+		$mdl->setGoogleMap((isset($row['Tavern_GoogleMap'])) ? $row['Tavern_GoogleMap'] : '');
+		$mdl->setDateCreated((isset($row['Tavern_DateCreated'])) ? $row['Tavern_DateCreated'] : '');
+		$mdl->setStatus((isset($row['Tavern_Status'])) ? $row['Tavern_Status'] : '');
 		return $mdl;
 	}
 }

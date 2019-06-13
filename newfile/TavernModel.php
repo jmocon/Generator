@@ -1,13 +1,15 @@
 <?php
-$mdlUpgrade = new UpgradeModel();
-class UpgradeModel{
+$mdlTavern = new TavernModel();
+class TavernModel{
 
 	private $Id = "";
-	private $Part_Id = "";
 	private $Name = "";
 	private $Description = "";
-	private $Price = "";
-	private $PriceType = "";
+	private $Country_Id = "";
+	private $Province_Id = "";
+	private $City_Id = "";
+	private $District_Id = "";
+	private $GoogleMap = "";
 	private $DateCreated = "";
 	private $Status = "";
 
@@ -28,24 +30,6 @@ class UpgradeModel{
 
 	public function setId($Id){
 		$this->Id = $Id;
-	}
-
-
-	//Part_Id
-	public function getPart_Id(){
-		return $this->Part_Id;
-	}
-
-	public function getsqlPart_Id(){
-		$Database = new Database();
-		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->Part_Id);
-		mysqli_close($conn);
-		return $value;
-	}
-
-	public function setPart_Id($Part_Id){
-		$this->Part_Id = $Part_Id;
 	}
 
 
@@ -85,39 +69,93 @@ class UpgradeModel{
 	}
 
 
-	//Price
-	public function getPrice(){
-		return $this->Price;
+	//Country_Id
+	public function getCountry_Id(){
+		return $this->Country_Id;
 	}
 
-	public function getsqlPrice(){
+	public function getsqlCountry_Id(){
 		$Database = new Database();
 		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->Price);
+		$value = mysqli_real_escape_string($conn,$this->Country_Id);
 		mysqli_close($conn);
 		return $value;
 	}
 
-	public function setPrice($Price){
-		$this->Price = $Price;
+	public function setCountry_Id($Country_Id){
+		$this->Country_Id = $Country_Id;
 	}
 
 
-	//PriceType
-	public function getPriceType(){
-		return $this->PriceType;
+	//Province_Id
+	public function getProvince_Id(){
+		return $this->Province_Id;
 	}
 
-	public function getsqlPriceType(){
+	public function getsqlProvince_Id(){
 		$Database = new Database();
 		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->PriceType);
+		$value = mysqli_real_escape_string($conn,$this->Province_Id);
 		mysqli_close($conn);
 		return $value;
 	}
 
-	public function setPriceType($PriceType){
-		$this->PriceType = $PriceType;
+	public function setProvince_Id($Province_Id){
+		$this->Province_Id = $Province_Id;
+	}
+
+
+	//City_Id
+	public function getCity_Id(){
+		return $this->City_Id;
+	}
+
+	public function getsqlCity_Id(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->City_Id);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setCity_Id($City_Id){
+		$this->City_Id = $City_Id;
+	}
+
+
+	//District_Id
+	public function getDistrict_Id(){
+		return $this->District_Id;
+	}
+
+	public function getsqlDistrict_Id(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->District_Id);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setDistrict_Id($District_Id){
+		$this->District_Id = $District_Id;
+	}
+
+
+	//GoogleMap
+	public function getGoogleMap(){
+		return $this->GoogleMap;
+	}
+
+	public function getsqlGoogleMap(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->GoogleMap);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setGoogleMap($GoogleMap){
+		$this->GoogleMap = $GoogleMap;
 	}
 
 
