@@ -273,15 +273,13 @@ class Generate{
   public function Get($result,$tbl){
 
     $txt = '';
-    $txt .= "\tpublic function Get(\$status=\"\"){\n";
+    $txt .= "\tpublic function Get(\$status=0){\n";
     $txt .= "\n";
     $txt .= "\t\t\$Database = new Database();\n";
     $txt .= "\t\t\$conn = \$Database->GetConn();\n";
     $txt .= "\n";
-    $txt .= "\t\t\$sql = \"SELECT * FROM `\".\$this->table.\"`\";\n";
-    $txt .= "\t\tif (\$status !== \"\") {\n";
-    $txt .= "\t\t\t\$sql .= \"WHERE `".$tbl."_Status` = '\".\$status.\"'\";\n";
-    $txt .= "\t\t}\n";
+    $txt .= "\t\t\$sql=\"SELECT * FROM `\".\$this->table.\"`\n";
+    $txt .= "\t\tWHERE `".$tbl."_Status` = '\".\$status.\"'\";";
     $txt .= "\n";
     $txt .= "\t\t\$result=mysqli_query(\$conn,\$sql) or die(mysqli_error(\$conn));\n";
     $txt .= "\n";
@@ -298,7 +296,7 @@ class Generate{
         $strchar = str_replace($tbl.'_',"",$value['Field']);
 
         if ($this->hasStatus){
-          $txt .= "\tpublic function Get$strchar"."ById(\$id,\$status=\"\"){\n";
+          $txt .= "\tpublic function Get$strchar"."ById(\$id,\$status=0){\n";
         }else {
           $txt .= "\tpublic function Get$strchar"."ById(\$id){\n";
         }
@@ -312,13 +310,11 @@ class Generate{
           $txt .= "\t\t\$status = mysqli_real_escape_string(\$conn,\$status);\n";
         }
         $txt .= "\n";
-        $txt .= "\t\t\$sql = \"SELECT `".$value['Field']."` FROM `\".\$this->table.\"`\n";
+        $txt .= "\t\t\$sql=\"SELECT `".$value['Field']."` FROM `\".\$this->table.\"`\n";
 
         if ($this->hasStatus){
-          $txt .= "\t\t\tWHERE `$tbl"."_Id` = '\".\$id.\"'\";\n";
-          $txt .= "\t\tif (\$status !== \"\") {\n";
-          $txt .= "\t\t\t\$sql .= \"AND `$tbl"."_Status` = '\".\$status.\"'\";\n";
-          $txt .= "\t\t}\n";
+          $txt .= "\t\tWHERE `$tbl"."_Id` = '\".\$id.\"'\n";
+          $txt .= "\t\tAND `$tbl"."_Status` = '\".\$status.\"'\";\n";
         }else {
           $txt .= "\t\tWHERE `$tbl"."_Id` = '\".\$id.\"'\";\n";
         }
@@ -342,7 +338,7 @@ class Generate{
 
         $strchar = str_replace($tbl.'_',"",$value['Field']);
         if ($this->hasStatus){
-          $txt .= "\tpublic function GetBy$strchar(\$value,\$status=\"\"){\n";
+          $txt .= "\tpublic function GetBy$strchar(\$value,\$status=0){\n";
         }else {
           $txt .= "\tpublic function GetBy$strchar(\$value){\n";
         }
@@ -359,10 +355,8 @@ class Generate{
         $txt .= "\t\t\$sql=\"SELECT * FROM `\".\$this->table.\"`\n";
 
         if ($this->hasStatus){
-          $txt .= "\t\t\tWHERE `".$value['Field']."` = '\".\$value.\"'\";\n";
-          $txt .= "\t\tif (\$status !== \"\") {\n";
-          $txt .= "\t\t\t\$sql .= \"AND `$tbl"."_Status` = '\".\$status.\"'\";\n";
-          $txt .= "\t\t}\n";
+          $txt .= "\t\tWHERE `".$value['Field']."` = '\".\$value.\"'\n";
+          $txt .= "\t\tAND `$tbl"."_Status` = '\".\$status.\"'\";\n";
         }else {
           $txt .= "\t\tWHERE `".$value['Field']."` = '\".\$value.\"'\";\n";
         }
