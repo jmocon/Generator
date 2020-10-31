@@ -69,9 +69,9 @@ class GenerateModel{
     foreach ($result as $key => $value) {
         if (substr($value['Field'],0,$strlen) == ($tbl."_")){
           $strchar = substr($value['Field'],$strlen);
-          $txt .= "\tprivate $".$strchar." = \"\";\n";
+          $txt .= "\tpublic $".$strchar." = \"\";\n";
         }else {
-          $txt .= "\tprivate $".$value['Field']." = \"\";\n";
+          $txt .= "\tpublic $".$value['Field']." = \"\";\n";
         }
     }
 
