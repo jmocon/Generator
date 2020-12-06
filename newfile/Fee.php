@@ -14,12 +14,10 @@ class Fee
 		$mysqli = $db->mysqli;
 		$query = "INSERT INTO `" . $this->table . "`
 			(
-				`User_Id`,
 				`Loan_Id`,
 				`Amount`,
 				`Status`
 			) VALUES (
-				'" . $db->Escape($mdl->User_Id) . "',
 				'" . $db->Escape($mdl->Loan_Id) . "',
 				'" . $db->Escape($mdl->Amount) . "',
 				'" . $db->Escape($mdl->Status) . "'
@@ -35,7 +33,6 @@ class Fee
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "UPDATE `" . $this->table . "` SET
-						`User_Id`='" . $db->Escape($mdl->User_Id) . "',
 						`Loan_Id`='" . $db->Escape($mdl->Loan_Id) . "',
 						`Amount`='" . $db->Escape($mdl->Amount) . "',
 						`Status`='" . $db->Escape($mdl->Status) . "'
@@ -69,17 +66,6 @@ class Fee
 			$lst[] = $obj;
 		}
 		return $lst;
-	}
-
-	public function GetUser_IdByFee_Id($value)
-	{
-		$db = new Database();
-		$mysqli = $db->mysqli;
-		$query = "SELECT `User_Id` FROM `" . $this->table . "`
-							WHERE `Fee_Id` = '" . $db->Escape($value) . "'";
-		$result = $mysqli->query($query);
-		$mysqli->close();
-		return $result->fetch_object()->User_Id;
 	}
 
 	public function GetLoan_IdByFee_Id($value)
@@ -121,17 +107,6 @@ class Fee
 		$mysqli = $db->mysqli;
 		$query = "SELECT * FROM `" . $this->table . "`
 							WHERE `Fee_Id` = '" . $db->Escape($value) . "'";
-		$result = $mysqli->query($query);
-		$mysqli->close();
-		return $result->fetch_object();
-	}
-
-	public function GetByUser_Id($value)
-	{
-		$db = new Database();
-		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -188,24 +163,6 @@ class Fee
 		$query = "SELECT COUNT(*) CNT
 							FROM `" . $this->table . "`
 							WHERE `Fee_Id` = '" . $db->Escape($value) . "'";
-		$result = $mysqli->query($query);
-		$mysqli->close();
-		if ($result->fetch_object()->CNT > 0) {
-			return true;
-		}
-		return false;
-	}
-
-	public function IsExistUser_Id($value, $id = "")
-	{
-		$db = new Database();
-		$mysqli = $db->mysqli;
-		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
-		if ($id != "") {
-			$query .= " AND `Fee_Id` != '" . $db->Escape($id) . "'";
-		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		if ($result->fetch_object()->CNT > 0) {

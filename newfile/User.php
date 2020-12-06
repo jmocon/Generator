@@ -12,7 +12,7 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "INSERT INTO `" . $this->table . "`
+		$query = "INSERT INTO `{$this->table}`
 			(
 				`IDNumber`,
 				`Password`,
@@ -27,18 +27,18 @@ class User
 				`Status`,
 				`UserType`
 			) VALUES (
-				'" . $db->Escape($mdl->IDNumber) . "',
-				'" . $db->Escape($mdl->Password) . "',
-				'" . $db->Escape($mdl->FirstName) . "',
-				'" . $db->Escape($mdl->MiddleName) . "',
-				'" . $db->Escape($mdl->LastName) . "',
-				'" . $db->Escape($mdl->SuffixName) . "',
-				'" . $db->Escape($mdl->HomeAddress) . "',
-				'" . $db->Escape($mdl->ContactNumber) . "',
-				'" . $db->Escape($mdl->EmailAddress) . "',
-				'" . $db->Escape($mdl->CardExpiration) . "',
-				'" . $db->Escape($mdl->Status) . "',
-				'" . $db->Escape($mdl->UserType) . "'
+				'{$db->Escape($mdl->IDNumber)}',
+				'{$db->Escape($mdl->Password)}',
+				'{$db->Escape($mdl->FirstName)}',
+				'{$db->Escape($mdl->MiddleName)}',
+				'{$db->Escape($mdl->LastName)}',
+				'{$db->Escape($mdl->SuffixName)}',
+				'{$db->Escape($mdl->HomeAddress)}',
+				'{$db->Escape($mdl->ContactNumber)}',
+				'{$db->Escape($mdl->EmailAddress)}',
+				'{$db->Escape($mdl->CardExpiration)}',
+				'{$db->Escape($mdl->Status)}',
+				'{$db->Escape($mdl->UserType)}'
 			)";
 		$mysqli->query($query);
 		$id = $mysqli->insert_id;
@@ -50,20 +50,20 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "UPDATE `" . $this->table . "` SET
-						`IDNumber`='" . $db->Escape($mdl->IDNumber) . "',
-						`Password`='" . $db->Escape($mdl->Password) . "',
-						`FirstName`='" . $db->Escape($mdl->FirstName) . "',
-						`MiddleName`='" . $db->Escape($mdl->MiddleName) . "',
-						`LastName`='" . $db->Escape($mdl->LastName) . "',
-						`SuffixName`='" . $db->Escape($mdl->SuffixName) . "',
-						`HomeAddress`='" . $db->Escape($mdl->HomeAddress) . "',
-						`ContactNumber`='" . $db->Escape($mdl->ContactNumber) . "',
-						`EmailAddress`='" . $db->Escape($mdl->EmailAddress) . "',
-						`CardExpiration`='" . $db->Escape($mdl->CardExpiration) . "',
-						`Status`='" . $db->Escape($mdl->Status) . "',
-						`UserType`='" . $db->Escape($mdl->UserType) . "'
-						WHERE `User_Id`='" . $db->Escape($mdl->User_Id) . "'";
+		$query = "UPDATE `{$this->table}` SET
+						`IDNumber`='{$db->Escape($mdl->IDNumber)}',
+						`Password`='{$db->Escape($mdl->Password)}',
+						`FirstName`='{$db->Escape($mdl->FirstName)}',
+						`MiddleName`='{$db->Escape($mdl->MiddleName)}',
+						`LastName`='{$db->Escape($mdl->LastName)}',
+						`SuffixName`='{$db->Escape($mdl->SuffixName)}',
+						`HomeAddress`='{$db->Escape($mdl->HomeAddress)}',
+						`ContactNumber`='{$db->Escape($mdl->ContactNumber)}',
+						`EmailAddress`='{$db->Escape($mdl->EmailAddress)}',
+						`CardExpiration`='{$db->Escape($mdl->CardExpiration)}',
+						`Status`='{$db->Escape($mdl->Status)}',
+						`UserType`='{$db->Escape($mdl->UserType)}'
+						WHERE `User_Id`='{$db->Escape($mdl->User_Id)}'";
 		$mysqli->query($query);
 		$rows = $mysqli->affected_rows;
 		$mysqli->close();
@@ -74,8 +74,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "DELETE FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($id) . "';";
+		$query = "DELETE FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($id)}';";
 		$mysqli->query($query);
 		$rows = $mysqli->affected_rows;
 		$mysqli->close();
@@ -86,7 +86,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		while ($obj = $result->fetch_object()) {
@@ -99,8 +100,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `IDNumber` FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `IDNumber` FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->IDNumber;
@@ -110,8 +111,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `Password` FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `Password` FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->Password;
@@ -121,8 +122,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `FirstName` FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `FirstName` FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->FirstName;
@@ -132,8 +133,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `MiddleName` FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `MiddleName` FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->MiddleName;
@@ -143,8 +144,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `LastName` FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `LastName` FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->LastName;
@@ -154,8 +155,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `SuffixName` FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `SuffixName` FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->SuffixName;
@@ -165,8 +166,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `HomeAddress` FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `HomeAddress` FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->HomeAddress;
@@ -176,8 +177,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `ContactNumber` FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `ContactNumber` FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->ContactNumber;
@@ -187,8 +188,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `EmailAddress` FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `EmailAddress` FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->EmailAddress;
@@ -198,8 +199,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `CardExpiration` FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `CardExpiration` FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->CardExpiration;
@@ -209,8 +210,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `Status` FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `Status` FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->Status;
@@ -220,8 +221,8 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `UserType` FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `UserType` FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->UserType;
@@ -231,8 +232,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -242,8 +244,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `IDNumber` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `IDNumber` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -253,8 +256,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Password` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Password` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -264,8 +268,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `FirstName` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `FirstName` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -275,8 +280,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `MiddleName` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `MiddleName` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -286,8 +292,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `LastName` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `LastName` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -297,8 +304,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `SuffixName` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `SuffixName` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -308,8 +316,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `HomeAddress` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `HomeAddress` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -319,8 +328,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `ContactNumber` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `ContactNumber` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -330,8 +340,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `EmailAddress` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `EmailAddress` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -341,8 +352,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `CardExpiration` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `CardExpiration` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -352,8 +364,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Status` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Status` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -363,8 +376,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `UserType` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `UserType` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -374,8 +388,9 @@ class User
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `X_DateCreated` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `X_DateCreated` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -386,8 +401,8 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		if ($result->fetch_object()->CNT > 0) {
@@ -401,10 +416,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `IDNumber` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `IDNumber` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -419,10 +434,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Password` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Password` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -437,10 +452,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `FirstName` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `FirstName` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -455,10 +470,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `MiddleName` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `MiddleName` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -473,10 +488,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `LastName` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `LastName` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -491,10 +506,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `SuffixName` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `SuffixName` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -509,10 +524,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `HomeAddress` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `HomeAddress` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -527,10 +542,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `ContactNumber` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `ContactNumber` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -545,10 +560,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `EmailAddress` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `EmailAddress` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -563,10 +578,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `CardExpiration` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `CardExpiration` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -581,10 +596,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Status` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Status` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -599,10 +614,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `UserType` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `UserType` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -617,10 +632,10 @@ class User
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `X_DateCreated` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `X_DateCreated` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `User_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `User_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();

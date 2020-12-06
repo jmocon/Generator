@@ -12,17 +12,13 @@ class SaveSearch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "INSERT INTO `" . $this->table . "`
+		$query = "INSERT INTO `{$this->table}`
 			(
 				`User_Id`,
-				`Keyword`,
-				`Type`,
-				`Query`
+				`Book_Id`
 			) VALUES (
-				'" . $db->Escape($mdl->User_Id) . "',
-				'" . $db->Escape($mdl->Keyword) . "',
-				'" . $db->Escape($mdl->Type) . "',
-				'" . $db->Escape($mdl->Query) . "'
+				'{$db->Escape($mdl->User_Id)}',
+				'{$db->Escape($mdl->Book_Id)}'
 			)";
 		$mysqli->query($query);
 		$id = $mysqli->insert_id;
@@ -34,12 +30,10 @@ class SaveSearch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "UPDATE `" . $this->table . "` SET
-						`User_Id`='" . $db->Escape($mdl->User_Id) . "',
-						`Keyword`='" . $db->Escape($mdl->Keyword) . "',
-						`Type`='" . $db->Escape($mdl->Type) . "',
-						`Query`='" . $db->Escape($mdl->Query) . "'
-						WHERE `SaveSearch_Id`='" . $db->Escape($mdl->SaveSearch_Id) . "'";
+		$query = "UPDATE `{$this->table}` SET
+						`User_Id`='{$db->Escape($mdl->User_Id)}',
+						`Book_Id`='{$db->Escape($mdl->Book_Id)}'
+						WHERE `SaveSearch_Id`='{$db->Escape($mdl->SaveSearch_Id)}'";
 		$mysqli->query($query);
 		$rows = $mysqli->affected_rows;
 		$mysqli->close();
@@ -50,8 +44,8 @@ class SaveSearch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "DELETE FROM `" . $this->table . "`
-							WHERE `SaveSearch_Id` = '" . $db->Escape($id) . "';";
+		$query = "DELETE FROM `{$this->table}`
+							WHERE `SaveSearch_Id` = '{$db->Escape($id)}';";
 		$mysqli->query($query);
 		$rows = $mysqli->affected_rows;
 		$mysqli->close();
@@ -62,7 +56,8 @@ class SaveSearch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		while ($obj = $result->fetch_object()) {
@@ -75,52 +70,31 @@ class SaveSearch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `User_Id` FROM `" . $this->table . "`
-							WHERE `SaveSearch_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `User_Id` FROM `{$this->table}`
+							WHERE `SaveSearch_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->User_Id;
 	}
 
-	public function GetKeywordBySaveSearch_Id($value)
+	public function GetBook_IdBySaveSearch_Id($value)
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `Keyword` FROM `" . $this->table . "`
-							WHERE `SaveSearch_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `Book_Id` FROM `{$this->table}`
+							WHERE `SaveSearch_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
-		return $result->fetch_object()->Keyword;
-	}
-
-	public function GetTypeBySaveSearch_Id($value)
-	{
-		$db = new Database();
-		$mysqli = $db->mysqli;
-		$query = "SELECT `Type` FROM `" . $this->table . "`
-							WHERE `SaveSearch_Id` = '" . $db->Escape($value) . "'";
-		$result = $mysqli->query($query);
-		$mysqli->close();
-		return $result->fetch_object()->Type;
-	}
-
-	public function GetQueryBySaveSearch_Id($value)
-	{
-		$db = new Database();
-		$mysqli = $db->mysqli;
-		$query = "SELECT `Query` FROM `" . $this->table . "`
-							WHERE `SaveSearch_Id` = '" . $db->Escape($value) . "'";
-		$result = $mysqli->query($query);
-		$mysqli->close();
-		return $result->fetch_object()->Query;
+		return $result->fetch_object()->Book_Id;
 	}
 
 	public function GetBySaveSearch_Id($value)
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `SaveSearch_Id` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `SaveSearch_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -130,41 +104,21 @@ class SaveSearch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
 	}
 
-	public function GetByKeyword($value)
+	public function GetByBook_Id($value)
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Keyword` = '" . $db->Escape($value) . "'";
-		$result = $mysqli->query($query);
-		$mysqli->close();
-		return $result->fetch_object();
-	}
-
-	public function GetByType($value)
-	{
-		$db = new Database();
-		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Type` = '" . $db->Escape($value) . "'";
-		$result = $mysqli->query($query);
-		$mysqli->close();
-		return $result->fetch_object();
-	}
-
-	public function GetByQuery($value)
-	{
-		$db = new Database();
-		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Query` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Book_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -174,8 +128,9 @@ class SaveSearch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `X_DateCreated` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `X_DateCreated` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -186,8 +141,8 @@ class SaveSearch
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `SaveSearch_Id` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `SaveSearch_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		if ($result->fetch_object()->CNT > 0) {
@@ -201,10 +156,10 @@ class SaveSearch
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `User_Id` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `User_Id` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `SaveSearch_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `SaveSearch_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -214,51 +169,15 @@ class SaveSearch
 		return false;
 	}
 
-	public function IsExistKeyword($value, $id = "")
+	public function IsExistBook_Id($value, $id = "")
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Keyword` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Book_Id` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `SaveSearch_Id` != '" . $db->Escape($id) . "'";
-		}
-		$result = $mysqli->query($query);
-		$mysqli->close();
-		if ($result->fetch_object()->CNT > 0) {
-			return true;
-		}
-		return false;
-	}
-
-	public function IsExistType($value, $id = "")
-	{
-		$db = new Database();
-		$mysqli = $db->mysqli;
-		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Type` = '" . $db->Escape($value) . "'";
-		if ($id != "") {
-			$query .= " AND `SaveSearch_Id` != '" . $db->Escape($id) . "'";
-		}
-		$result = $mysqli->query($query);
-		$mysqli->close();
-		if ($result->fetch_object()->CNT > 0) {
-			return true;
-		}
-		return false;
-	}
-
-	public function IsExistQuery($value, $id = "")
-	{
-		$db = new Database();
-		$mysqli = $db->mysqli;
-		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Query` = '" . $db->Escape($value) . "'";
-		if ($id != "") {
-			$query .= " AND `SaveSearch_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `SaveSearch_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -273,10 +192,10 @@ class SaveSearch
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `X_DateCreated` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `X_DateCreated` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `SaveSearch_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `SaveSearch_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();

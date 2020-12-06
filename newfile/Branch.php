@@ -12,13 +12,13 @@ class Branch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "INSERT INTO `" . $this->table . "`
+		$query = "INSERT INTO `{$this->table}`
 			(
 				`Name`,
 				`Address`
 			) VALUES (
-				'" . $db->Escape($mdl->Name) . "',
-				'" . $db->Escape($mdl->Address) . "'
+				'{$db->Escape($mdl->Name)}',
+				'{$db->Escape($mdl->Address)}'
 			)";
 		$mysqli->query($query);
 		$id = $mysqli->insert_id;
@@ -30,10 +30,10 @@ class Branch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "UPDATE `" . $this->table . "` SET
-						`Name`='" . $db->Escape($mdl->Name) . "',
-						`Address`='" . $db->Escape($mdl->Address) . "'
-						WHERE `Branch_Id`='" . $db->Escape($mdl->Branch_Id) . "'";
+		$query = "UPDATE `{$this->table}` SET
+						`Name`='{$db->Escape($mdl->Name)}',
+						`Address`='{$db->Escape($mdl->Address)}'
+						WHERE `Branch_Id`='{$db->Escape($mdl->Branch_Id)}'";
 		$mysqli->query($query);
 		$rows = $mysqli->affected_rows;
 		$mysqli->close();
@@ -44,8 +44,8 @@ class Branch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "DELETE FROM `" . $this->table . "`
-							WHERE `Branch_Id` = '" . $db->Escape($id) . "';";
+		$query = "DELETE FROM `{$this->table}`
+							WHERE `Branch_Id` = '{$db->Escape($id)}';";
 		$mysqli->query($query);
 		$rows = $mysqli->affected_rows;
 		$mysqli->close();
@@ -56,7 +56,8 @@ class Branch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		while ($obj = $result->fetch_object()) {
@@ -69,8 +70,8 @@ class Branch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `Name` FROM `" . $this->table . "`
-							WHERE `Branch_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `Name` FROM `{$this->table}`
+							WHERE `Branch_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->Name;
@@ -80,8 +81,8 @@ class Branch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `Address` FROM `" . $this->table . "`
-							WHERE `Branch_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `Address` FROM `{$this->table}`
+							WHERE `Branch_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->Address;
@@ -91,8 +92,9 @@ class Branch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Branch_Id` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Branch_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -102,8 +104,9 @@ class Branch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Name` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Name` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -113,8 +116,9 @@ class Branch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Address` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Address` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -124,8 +128,9 @@ class Branch
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `X_DateCreated` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `X_DateCreated` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -136,8 +141,8 @@ class Branch
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Branch_Id` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Branch_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		if ($result->fetch_object()->CNT > 0) {
@@ -151,10 +156,10 @@ class Branch
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Name` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Name` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `Branch_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `Branch_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -169,10 +174,10 @@ class Branch
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Address` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Address` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `Branch_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `Branch_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -187,10 +192,10 @@ class Branch
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `X_DateCreated` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `X_DateCreated` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `Branch_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `Branch_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();

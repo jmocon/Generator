@@ -12,11 +12,17 @@ class Subject
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "INSERT INTO `" . $this->table . "`
+		$query = "INSERT INTO `{$this->table}`
 			(
-				`Name`
+				`Name`,
+				`LoanPeriod`,
+				`Penalty`,
+				`Overdue`
 			) VALUES (
-				'" . $db->Escape($mdl->Name) . "'
+				'{$db->Escape($mdl->Name)}',
+				'{$db->Escape($mdl->LoanPeriod)}',
+				'{$db->Escape($mdl->Penalty)}',
+				'{$db->Escape($mdl->Overdue)}'
 			)";
 		$mysqli->query($query);
 		$id = $mysqli->insert_id;
@@ -28,9 +34,12 @@ class Subject
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "UPDATE `" . $this->table . "` SET
-						`Name`='" . $db->Escape($mdl->Name) . "'
-						WHERE `Subject_Id`='" . $db->Escape($mdl->Subject_Id) . "'";
+		$query = "UPDATE `{$this->table}` SET
+						`Name`='{$db->Escape($mdl->Name)}',
+						`LoanPeriod`='{$db->Escape($mdl->LoanPeriod)}',
+						`Penalty`='{$db->Escape($mdl->Penalty)}'
+						`Overdue`='{$db->Escape($mdl->Overdue)}'
+						WHERE `Subject_Id`='{$db->Escape($mdl->Subject_Id)}'";
 		$mysqli->query($query);
 		$rows = $mysqli->affected_rows;
 		$mysqli->close();
@@ -41,8 +50,8 @@ class Subject
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "DELETE FROM `" . $this->table . "`
-							WHERE `Subject_Id` = '" . $db->Escape($id) . "';";
+		$query = "DELETE FROM `{$this->table}`
+							WHERE `Subject_Id` = '{$db->Escape($id)}';";
 		$mysqli->query($query);
 		$rows = $mysqli->affected_rows;
 		$mysqli->close();
@@ -53,7 +62,8 @@ class Subject
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		while ($obj = $result->fetch_object()) {
@@ -66,19 +76,53 @@ class Subject
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `Name` FROM `" . $this->table . "`
-							WHERE `Subject_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `Name` FROM `{$this->table}`
+							WHERE `Subject_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->Name;
+	}
+
+	public function GetLoanPeriodBySubject_Id($value)
+	{
+		$db = new Database();
+		$mysqli = $db->mysqli;
+		$query = "SELECT `LoanPeriod` FROM `{$this->table}`
+							WHERE `Subject_Id` = '{$db->Escape($value)}'";
+		$result = $mysqli->query($query);
+		$mysqli->close();
+		return $result->fetch_object()->LoanPeriod;
+	}
+
+	public function GetPenaltyBySubject_Id($value)
+	{
+		$db = new Database();
+		$mysqli = $db->mysqli;
+		$query = "SELECT `Penalty` FROM `{$this->table}`
+							WHERE `Subject_Id` = '{$db->Escape($value)}'";
+		$result = $mysqli->query($query);
+		$mysqli->close();
+		return $result->fetch_object()->Penalty;
+	}
+
+	public function GetOverdueBySubject_Id($value)
+	{
+		$db = new Database();
+		$mysqli = $db->mysqli;
+		$query = "SELECT `Overdue` FROM `{$this->table}`
+							WHERE `Subject_Id` = '{$db->Escape($value)}'";
+		$result = $mysqli->query($query);
+		$mysqli->close();
+		return $result->fetch_object()->Overdue;
 	}
 
 	public function GetBySubject_Id($value)
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Subject_Id` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Subject_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -88,8 +132,45 @@ class Subject
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Name` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Name` = '{$db->Escape($value)}'";
+		$result = $mysqli->query($query);
+		$mysqli->close();
+		return $result->fetch_object();
+	}
+
+	public function GetByLoanPeriod($value)
+	{
+		$db = new Database();
+		$mysqli = $db->mysqli;
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `LoanPeriod` = '{$db->Escape($value)}'";
+		$result = $mysqli->query($query);
+		$mysqli->close();
+		return $result->fetch_object();
+	}
+
+	public function GetByPenalty($value)
+	{
+		$db = new Database();
+		$mysqli = $db->mysqli;
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Penalty` = '{$db->Escape($value)}'";
+		$result = $mysqli->query($query);
+		$mysqli->close();
+		return $result->fetch_object();
+	}
+
+	public function GetByOverdue($value)
+	{
+		$db = new Database();
+		$mysqli = $db->mysqli;
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Overdue` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -100,8 +181,8 @@ class Subject
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Subject_Id` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Subject_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		if ($result->fetch_object()->CNT > 0) {
@@ -115,10 +196,64 @@ class Subject
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Name` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Name` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `Subject_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `Subject_Id` != '{$db->Escape($id)}'";
+		}
+		$result = $mysqli->query($query);
+		$mysqli->close();
+		if ($result->fetch_object()->CNT > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public function IsExistLoanPeriod($value, $id = "")
+	{
+		$db = new Database();
+		$mysqli = $db->mysqli;
+		$query = "SELECT COUNT(*) CNT
+							FROM `{$this->table}`
+							WHERE `LoanPeriod` = '{$db->Escape($value)}'";
+		if ($id != "") {
+			$query .= " AND `Subject_Id` != '{$db->Escape($id)}'";
+		}
+		$result = $mysqli->query($query);
+		$mysqli->close();
+		if ($result->fetch_object()->CNT > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public function IsExistPenalty($value, $id = "")
+	{
+		$db = new Database();
+		$mysqli = $db->mysqli;
+		$query = "SELECT COUNT(*) CNT
+							FROM `{$this->table}`
+							WHERE `Penalty` = '{$db->Escape($value)}'";
+		if ($id != "") {
+			$query .= " AND `Subject_Id` != '{$db->Escape($id)}'";
+		}
+		$result = $mysqli->query($query);
+		$mysqli->close();
+		if ($result->fetch_object()->CNT > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public function IsExistOverdue($value, $id = "")
+	{
+		$db = new Database();
+		$mysqli = $db->mysqli;
+		$query = "SELECT COUNT(*) CNT
+							FROM `{$this->table}`
+							WHERE `Overdue` = '{$db->Escape($value)}'";
+		if ($id != "") {
+			$query .= " AND `Subject_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();

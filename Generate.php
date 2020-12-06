@@ -18,7 +18,7 @@ class Generate
     $Database = new Database();
     $conn = $Database->GetConn();
 
-    $sql = "SHOW TABLES FROM $database";
+    $sql = "SHOW TABLES FROM {$database}";
     $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
     while ($row = mysqli_fetch_array($result)) {
@@ -37,7 +37,7 @@ class Generate
     $Database = new Database($this->db);
     $conn = $Database->GetConn();
 
-    $sql = "SHOW COLUMNS FROM $table";
+    $sql = "SHOW COLUMNS FROM {$table}";
     $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
     while ($row = mysqli_fetch_array($result)) {
@@ -123,7 +123,7 @@ class Generate
     $txt .= "\t{\n";
     $txt .= "\t\t\$db = new Database();\n";
     $txt .= "\t\t\$mysqli = \$db->mysqli;\n";
-    $txt .= "\t\t\$query = \"INSERT INTO `\" . \$this->table . \"`\n";
+    $txt .= "\t\t\$query = \"INSERT INTO `{\$this->table}`\n";
     $txt .= "\t\t\t(\n";
     $ex = array($tbl . "_Id", "X_DateCreated", "X_Status");
     $count = 0;
@@ -149,7 +149,7 @@ class Generate
           $txt .= ",\n";
         }
         $strchar = str_replace($tbl . '_', "", $value['Field']);
-        $txt .= "\t\t\t\t'\" . \$db->Escape(\$mdl->$strchar) . \"'";
+        $txt .= "\t\t\t\t'{\$db->Escape(\$mdl->$strchar)}'";
       }
     }
 
@@ -173,7 +173,7 @@ class Generate
     $txt .= "\t{\n";
     $txt .= "\t\t\$db = new Database();\n";
     $txt .= "\t\t\$mysqli = \$db->mysqli;\n";
-    $txt .= "\t\t\$query = \"UPDATE `\" . \$this->table . \"` SET\n";
+    $txt .= "\t\t\$query = \"UPDATE `{\$this->table}` SET\n";
 
     $num_rows = mysqli_num_rows($result);
     $i = 0;
@@ -183,7 +183,7 @@ class Generate
       if ($value['Field'] != ($tbl . "_Id") && $value['Field'] != "X_DateCreated") {
 
         $strchar = str_replace($tbl . '_', "", $value['Field']);
-        $txt .= "\t\t\t\t\t\t`" . $value['Field'] . "`='\" . \$db->Escape(\$mdl->$strchar) . \"'";
+        $txt .= "\t\t\t\t\t\t`" . $value['Field'] . "`='{\$db->Escape(\$mdl->$strchar)}'";
 
         if (++$i <= ($num_rows - 3)) {
           $txt .= ",";
@@ -193,7 +193,7 @@ class Generate
       }
     }
 
-    $txt .= "\t\t\t\t\t\tWHERE `$tbl" . "_Id`='\" . \$db->Escape(\$mdl->$tbl" . "_Id) . \"'\";\n";
+    $txt .= "\t\t\t\t\t\tWHERE `$tbl" . "_Id`='{\$db->Escape(\$mdl->$tbl" . "_Id)}'\";\n";
     $txt .= "\t\t\$mysqli->query(\$query);\n";
     $txt .= "\t\t\$rows = \$mysqli->affected_rows;\n";
     $txt .= "\t\t\$mysqli->close();\n";
@@ -237,8 +237,8 @@ class Generate
     $txt .= "\t{\n";
     $txt .= "\t\t\$db = new Database();\n";
     $txt .= "\t\t\$mysqli = \$db->mysqli;\n";
-    $txt .= "\t\t\$query = \"DELETE FROM `\" . \$this->table . \"`\n";
-    $txt .= "\t\t\t\t\t\t\tWHERE `$tbl" . "_Id` = '\" . \$db->Escape(\$id) . \"';\";\n";
+    $txt .= "\t\t\$query = \"DELETE FROM `{\$this->table}`\n";
+    $txt .= "\t\t\t\t\t\t\tWHERE `$tbl" . "_Id` = '{\$db->Escape(\$id)}';\";\n";
     $txt .= "\t\t\$mysqli->query(\$query);\n";
     $txt .= "\t\t\$rows = \$mysqli->affected_rows;\n";
     $txt .= "\t\t\$mysqli->close();\n";
@@ -257,7 +257,8 @@ class Generate
     $txt .= "\t{\n";
     $txt .= "\t\t\$db = new Database();\n";
     $txt .= "\t\t\$mysqli = \$db->mysqli;\n";
-    $txt .= "\t\t\$query = \"SELECT * FROM `\" . \$this->table . \"`\";\n";
+    $txt .= "\t\t\$lst = array();\n";
+    $txt .= "\t\t\$query = \"SELECT * FROM `{\$this->table}`\";\n";
     $txt .= "\t\t\$result = \$mysqli->query(\$query);\n";
     $txt .= "\t\t\$mysqli->close();\n";
     $txt .= "\t\twhile (\$obj = \$result->fetch_object()) {\n";
@@ -282,12 +283,12 @@ class Generate
         $txt .= "\t{\n";
         $txt .= "\t\t\$db = new Database();\n";
         $txt .= "\t\t\$mysqli = \$db->mysqli;\n";
-        $txt .= "\t\t\$query = \"SELECT `" . $value['Field'] . "` FROM `\" . \$this->table . \"`\n";
-        $txt .= "\t\t\t\t\t\t\tWHERE `$tbl" . "_Id` = '\" . \$db->Escape(\$value) . \"'\";\n";
+        $txt .= "\t\t\$query = \"SELECT `" . $value['Field'] . "` FROM `{\$this->table}`\n";
+        $txt .= "\t\t\t\t\t\t\tWHERE `$tbl" . "_Id` = '{\$db->Escape(\$value)}'\";\n";
 
         if ($this->hasStatus) {
           $txt .= "\t\tif (\$status !== \"\") {\n";
-          $txt .= "\t\t\t\$query .= \"AND `X_Status` = '\" . \$db->Escape(\$status) . \"'\";\n";
+          $txt .= "\t\t\t\$query .= \"AND `X_Status` = '{\$db->Escape(\$status)}'\";\n";
           $txt .= "\t\t}\n";
         }
         $txt .= "\t\t\$result = \$mysqli->query(\$query);\n";
@@ -309,12 +310,13 @@ class Generate
       $txt .= "\t{\n";
       $txt .= "\t\t\$db = new Database();\n";
       $txt .= "\t\t\$mysqli = \$db->mysqli;\n";
-      $txt .= "\t\t\$query = \"SELECT * FROM `\" . \$this->table . \"`\n";
-      $txt .= "\t\t\t\t\t\t\tWHERE `" . $value['Field'] . "` = '\" . \$db->Escape(\$value) . \"'\";\n";
+      $txt .= "\t\t\$lst = array();\n";
+      $txt .= "\t\t\$query = \"SELECT * FROM `{\$this->table}`\n";
+      $txt .= "\t\t\t\t\t\t\tWHERE `" . $value['Field'] . "` = '{\$db->Escape(\$value)}'\";\n";
 
       if ($this->hasStatus) {
         $txt .= "\t\tif (\$status !== \"\") {\n";
-        $txt .= "\t\t\t\$query .= \" AND `X_Status` = '\" . \$db->Escape(\$status) . \"'\";\n";
+        $txt .= "\t\t\t\$query .= \" AND `X_Status` = '{\$db->Escape(\$status)}'\";\n";
         $txt .= "\t\t}\n";
       }
       $txt .= "\t\t\$result = \$mysqli->query(\$query);\n";
@@ -345,16 +347,16 @@ class Generate
       $txt .= "\t\t\$db = new Database();\n";
       $txt .= "\t\t\$mysqli = \$db->mysqli;\n";
       $txt .= "\t\t\$query = \"SELECT COUNT(*) CNT\n";
-      $txt .= "\t\t\t\t\t\t\tFROM `\" . \$this->table . \"`\n";
-      $txt .= "\t\t\t\t\t\t\tWHERE `" . $value['Field'] . "` = '\" . \$db->Escape(\$value) . \"'\";\n";
+      $txt .= "\t\t\t\t\t\t\tFROM `{\$this->table}`\n";
+      $txt .= "\t\t\t\t\t\t\tWHERE `" . $value['Field'] . "` = '{\$db->Escape(\$value)}'\";\n";
       if ($value['Field'] != $tbl . "_Id") {
         $txt .= "\t\tif (\$id != \"\") {\n";
-        $txt .= "\t\t\t\$query .= \" AND `$tbl" . "_Id` != '\" . \$db->Escape(\$id) . \"'\";\n";
+        $txt .= "\t\t\t\$query .= \" AND `$tbl" . "_Id` != '{\$db->Escape(\$id)}'\";\n";
         $txt .= "\t\t}\n";
       }
       if ($this->hasStatus) {
         $txt .= "\t\tif (\$status != \"\") {\n";
-        $txt .= "\t\t\t\$query .= \" AND `X_Status` = '\" . \$db->Escape(\$status) . \"'\";\n";
+        $txt .= "\t\t\t\$query .= \" AND `X_Status` = '{\$db->Escape(\$status)}'\";\n";
         $txt .= "\t\t}\n";
       }
       $txt .= "\t\t\$result = \$mysqli->query(\$query);\n";

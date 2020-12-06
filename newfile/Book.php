@@ -12,7 +12,7 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "INSERT INTO `" . $this->table . "`
+		$query = "INSERT INTO `{$this->table}`
 			(
 				`Code`,
 				`Keyword`,
@@ -22,13 +22,13 @@ class Book
 				`Synopsis`,
 				`DatePublished`
 			) VALUES (
-				'" . $db->Escape($mdl->Code) . "',
-				'" . $db->Escape($mdl->Keyword) . "',
-				'" . $db->Escape($mdl->Title) . "',
-				'" . $db->Escape($mdl->Author) . "',
-				'" . $db->Escape($mdl->Subject_Id) . "',
-				'" . $db->Escape($mdl->Synopsis) . "',
-				'" . $db->Escape($mdl->DatePublished) . "'
+				'{$db->Escape($mdl->Code)}',
+				'{$db->Escape($mdl->Keyword)}',
+				'{$db->Escape($mdl->Title)}',
+				'{$db->Escape($mdl->Author)}',
+				'{$db->Escape($mdl->Subject_Id)}',
+				'{$db->Escape($mdl->Synopsis)}',
+				'{$db->Escape($mdl->DatePublished)}'
 			)";
 		$mysqli->query($query);
 		$id = $mysqli->insert_id;
@@ -40,15 +40,15 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "UPDATE `" . $this->table . "` SET
-						`Code`='" . $db->Escape($mdl->Code) . "',
-						`Keyword`='" . $db->Escape($mdl->Keyword) . "',
-						`Title`='" . $db->Escape($mdl->Title) . "',
-						`Author`='" . $db->Escape($mdl->Author) . "',
-						`Subject_Id`='" . $db->Escape($mdl->Subject_Id) . "',
-						`Synopsis`='" . $db->Escape($mdl->Synopsis) . "',
-						`DatePublished`='" . $db->Escape($mdl->DatePublished) . "'
-						WHERE `Book_Id`='" . $db->Escape($mdl->Book_Id) . "'";
+		$query = "UPDATE `{$this->table}` SET
+						`Code`='{$db->Escape($mdl->Code)}',
+						`Keyword`='{$db->Escape($mdl->Keyword)}',
+						`Title`='{$db->Escape($mdl->Title)}',
+						`Author`='{$db->Escape($mdl->Author)}',
+						`Subject_Id`='{$db->Escape($mdl->Subject_Id)}',
+						`Synopsis`='{$db->Escape($mdl->Synopsis)}',
+						`DatePublished`='{$db->Escape($mdl->DatePublished)}'
+						WHERE `Book_Id`='{$db->Escape($mdl->Book_Id)}'";
 		$mysqli->query($query);
 		$rows = $mysqli->affected_rows;
 		$mysqli->close();
@@ -59,8 +59,8 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "DELETE FROM `" . $this->table . "`
-							WHERE `Book_Id` = '" . $db->Escape($id) . "';";
+		$query = "DELETE FROM `{$this->table}`
+							WHERE `Book_Id` = '{$db->Escape($id)}';";
 		$mysqli->query($query);
 		$rows = $mysqli->affected_rows;
 		$mysqli->close();
@@ -71,7 +71,8 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		while ($obj = $result->fetch_object()) {
@@ -84,8 +85,8 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `Code` FROM `" . $this->table . "`
-							WHERE `Book_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `Code` FROM `{$this->table}`
+							WHERE `Book_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->Code;
@@ -95,8 +96,8 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `Keyword` FROM `" . $this->table . "`
-							WHERE `Book_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `Keyword` FROM `{$this->table}`
+							WHERE `Book_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->Keyword;
@@ -106,8 +107,8 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `Title` FROM `" . $this->table . "`
-							WHERE `Book_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `Title` FROM `{$this->table}`
+							WHERE `Book_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->Title;
@@ -117,8 +118,8 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `Author` FROM `" . $this->table . "`
-							WHERE `Book_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `Author` FROM `{$this->table}`
+							WHERE `Book_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->Author;
@@ -128,8 +129,8 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `Subject_Id` FROM `" . $this->table . "`
-							WHERE `Book_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `Subject_Id` FROM `{$this->table}`
+							WHERE `Book_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->Subject_Id;
@@ -139,8 +140,8 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `Synopsis` FROM `" . $this->table . "`
-							WHERE `Book_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `Synopsis` FROM `{$this->table}`
+							WHERE `Book_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->Synopsis;
@@ -150,8 +151,8 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT `DatePublished` FROM `" . $this->table . "`
-							WHERE `Book_Id` = '" . $db->Escape($value) . "'";
+		$query = "SELECT `DatePublished` FROM `{$this->table}`
+							WHERE `Book_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object()->DatePublished;
@@ -161,8 +162,9 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Book_Id` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Book_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -172,8 +174,9 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Code` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Code` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -183,8 +186,9 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Keyword` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Keyword` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -194,8 +198,9 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Title` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Title` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -205,8 +210,9 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Author` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Author` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -216,8 +222,9 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Subject_Id` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Subject_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -227,8 +234,9 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `Synopsis` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `Synopsis` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -238,8 +246,9 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `DatePublished` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `DatePublished` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -249,8 +258,9 @@ class Book
 	{
 		$db = new Database();
 		$mysqli = $db->mysqli;
-		$query = "SELECT * FROM `" . $this->table . "`
-							WHERE `X_DateCreated` = '" . $db->Escape($value) . "'";
+		$lst = array();
+		$query = "SELECT * FROM `{$this->table}`
+							WHERE `X_DateCreated` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result->fetch_object();
@@ -261,8 +271,8 @@ class Book
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Book_Id` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Book_Id` = '{$db->Escape($value)}'";
 		$result = $mysqli->query($query);
 		$mysqli->close();
 		if ($result->fetch_object()->CNT > 0) {
@@ -276,10 +286,10 @@ class Book
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Code` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Code` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `Book_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `Book_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -294,10 +304,10 @@ class Book
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Keyword` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Keyword` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `Book_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `Book_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -312,10 +322,10 @@ class Book
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Title` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Title` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `Book_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `Book_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -330,10 +340,10 @@ class Book
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Author` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Author` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `Book_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `Book_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -348,10 +358,10 @@ class Book
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Subject_Id` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Subject_Id` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `Book_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `Book_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -366,10 +376,10 @@ class Book
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `Synopsis` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `Synopsis` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `Book_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `Book_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -384,10 +394,10 @@ class Book
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `DatePublished` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `DatePublished` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `Book_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `Book_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
@@ -402,10 +412,10 @@ class Book
 		$db = new Database();
 		$mysqli = $db->mysqli;
 		$query = "SELECT COUNT(*) CNT
-							FROM `" . $this->table . "`
-							WHERE `X_DateCreated` = '" . $db->Escape($value) . "'";
+							FROM `{$this->table}`
+							WHERE `X_DateCreated` = '{$db->Escape($value)}'";
 		if ($id != "") {
-			$query .= " AND `Book_Id` != '" . $db->Escape($id) . "'";
+			$query .= " AND `Book_Id` != '{$db->Escape($id)}'";
 		}
 		$result = $mysqli->query($query);
 		$mysqli->close();
